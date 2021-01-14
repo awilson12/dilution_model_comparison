@@ -31,9 +31,9 @@ H.fome.nonfinger<-0.5*H.fome
   
 #Parameters for Model B & C-----------------------------------------------
 S.F<-0.20
-S.NF<-runif(iter,0.11,0.18)
-A.fingertip<-runif(iter,17.8,321)
-A.nonfingertip<-runif(124,517.2)
+S.NF<-runif(iter,0.03,0.18)
+A.fingertip<-runif(iter,17.8,32.1)
+A.nonfingertip<-runif(412.9,517.2)
 H.sm.finger<-(2/3)*H.fome.finger
 H.lg.finger<-(1/3)*H.fome.finger
 H.sm.nonfinger<-(2/3)*H.fome.nonfinger
