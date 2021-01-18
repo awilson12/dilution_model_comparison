@@ -1,5 +1,7 @@
 #Parameters relevant to all models----------------------------------------
 
+duration<-20 #min
+
 TE.HF<-runif(iter,0.01,0.406)
 TE.FH<-runif(iter,0.01,0.406)
 TE.HM<-rtrunc(iter,"norm",mean=0.3390,iter=0.1318,a=0,b=1)
@@ -14,7 +16,7 @@ H.face<-rtrunc(iter,"norm",mean=14,sd=5.4,a=0,b=1)/60 #per hr so convert to per 
 #Parameters for Model A only-------------------------------------------------------
 A.hand<-runif(iter,445,535) #cm^2
 S.H<-runif(iter,0.008,0.24)
-S.F<-runif(iter,0.008,0.012)
+S.Face<-runif(iter,0.008,0.012)
 
 H.fome<-lnorm(meanlog=log(4.1),sdlog=log(1.6))
 
@@ -22,6 +24,8 @@ H.fome<-lnorm(meanlog=log(4.1),sdlog=log(1.6))
 #Parameters for Model A & B----------------------------------------------
 
 total.fomeSA<-20100 #cm^2
+
+group.virus<-200 #virus on surfaces total
 
 
 #Parameters for Model B Only---------------------------------------------
@@ -31,6 +35,7 @@ H.fome.nonfinger<-0.5*H.fome
   
 #Parameters for Model B & C-----------------------------------------------
 S.F<-0.20
+S.F.fomite<-runif(iter,0.2,1)
 S.NF<-runif(iter,0.03,0.18)
 A.fingertip<-runif(iter,17.8,32.1)
 A.nonfingertip<-runif(412.9,517.2)
@@ -42,3 +47,6 @@ H.lg.nonfinger<-(1/3)*H.fome.nonfinger
 #Paramters for Model C Only
 SA.smallfomite<-100 #cm^2
 SA.largefomite<-20000 #cm^2
+
+small.fome.virus<-100
+large.fome.virus<-100
