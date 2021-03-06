@@ -2,13 +2,10 @@ require(truncdist)
 require(ggplot2)
 require(ggpubr)
 
-iter<-1000
+iter<-10000
 timestep<-0.001
 
-source('defining_parameters.R')
-source('defining_rates.R') #note that probabilities are defined within the simulation code function
-
-source('simulation_code.R')
+source('simulation_code_dilution_v2.R')
 
 #----------------MODEL A--------------------------------------------
 
@@ -26,13 +23,19 @@ fomites<-rep(NA,iter)
 fomites.mean<-rep(NA,lengthsim)
 fomites.sd<-rep(NA,lengthsim)
 
+doseA<-rep(NA,iter)
+
 for (i in 1:lengthsim){
   
   for(j in 1:iter){
     temp<-matrix.list[[j]]
-    mucous[j]<-matrix.list[[j]]$`mucous membranes`[i]
-    hands[j]<-matrix.list[[j]]$hands[i]
-    fomites[j]<-matrix.list[[j]]$fomites[i]
+    mucous[j]<-matrix.list[[j]][4,i]
+    hands[j]<-matrix.list[[j]][2,i]
+    fomites[j]<-matrix.list[[j]][1,i]
+    
+    if(i==lengthsim){
+      doseA[j]<-mucous[j]
+    }
   }
   
   mucous.mean[i]<-mean(mucous)
@@ -75,14 +78,20 @@ fomites<-rep(NA,iter)
 fomites.mean<-rep(NA,lengthsim)
 fomites.sd<-rep(NA,lengthsim)
 
+doseB<-rep(NA,iter)
+
 for (i in 1:lengthsim){
   
   for(j in 1:iter){
     temp<-matrix.list[[j]]
-    mucous[j]<-matrix.list[[j]]$`mucous membranes`[i]
-    fingertip[j]<-matrix.list[[j]]$fingertip[i]
-    nonfingertip[j]<-matrix.list[[j]]$`non-fingertip`[i]
-    fomites[j]<-matrix.list[[j]]$fomites[i]
+    mucous[j]<-matrix.list[[j]][5,i]
+    fingertip[j]<-matrix.list[[j]][2,i]
+    nonfingertip[j]<-matrix.list[[j]][3,i]
+    fomites[j]<-matrix.list[[j]][1,i]
+    
+    if(i==lengthsim){
+      doseB[j]<-mucous[j]
+    }
   }
   
   mucous.mean[i]<-mean(mucous)
@@ -135,18 +144,27 @@ largefomite<-rep(NA,iter)
 largefomite.mean<-rep(NA,lengthsim)
 largefomite.sd<-rep(NA,lengthsim)
 
+doseC<-rep(NA,iter)
+
+
 for (i in 1:lengthsim){
   
   for(j in 1:iter){
     temp<-matrix.list[[j]]
-    mucous[j]<-matrix.list[[j]]$`mucous membranes`[i]
-    fingertip[j]<-matrix.list[[j]]$fingertip[i]
-    nonfingertip[j]<-matrix.list[[j]]$`non-fingertip`[i]
-    smallfomite[j]<-matrix.list[[j]]$`small fomite`[i]
-    largefomite[j]<-matrix.list[[j]]$`large fomite`[i]
+    mucous[j]<-matrix.list[[j]][6,i]
+    fingertip[j]<-matrix.list[[j]][4,i]
+    nonfingertip[j]<-matrix.list[[j]][3,i]
+    smallfomite[j]<-matrix.list[[j]][1,i]
+    largefomite<-matrix.list[[j]][2,i]
+    
+    if(i==lengthsim){
+      doseC[j]<-mucous[j]
+    }
   }
   
+  
   mucous.mean[i]<-mean(mucous)
+  
   mucous.sd[i]<-sd(mucous)
   
   fingertip.mean[i]<-mean(fingertip)
@@ -163,6 +181,16 @@ for (i in 1:lengthsim){
   
 }
 
+largefomite.conc<-rep(NA,iter)
+smallfomite.conc<-rep(NA,iter)
+mucous.max<-rep(NA,iter)
+
+for(j in 1:iter){
+  mucous.max[j]<-max(matrix.list[[j]][6,])
+  smallfomite.conc[j]<-matrix.list[[j]][1,1]
+  largefomite.conc[j]<-matrix.list[[j]][2,1]
+}
+
 
 means<-c(mucous.mean,fingertip.mean,nonfingertip.mean,
          smallfomite.mean,largefomite.mean)
@@ -176,16 +204,52 @@ time<-rep(1:lengthsim,5)
 frame.model.C<-data.frame(means=means,sd=sd,state=state,time=time,
                           model="Model C")
 
+frame.ratio<-data.frame(mucousmax=mucous.max,smallfomite.conc=smallfomite.conc,
+                        largefomite.conc=largefomite.conc)
+
+ggplot(frame.ratio)+geom_point(aes(x=smallfomite.conc/200,y=mucousmax))+
+  scale_y_continuous(trans="log10")
+
 #-------------------------frame all---------------------------------------------------------------
 frame.all<-rbind(frame.model.A,frame.model.B,frame.model.C)
 
 windows()
 ggplot(frame.all)+geom_line(aes(x=time,y=means,group=state,color=state))+
   geom_ribbon(aes(x=time,ymin=means-sd,ymax=means+sd,group=state,fill=state),alpha=0.3)+
-  #scale_y_continuous(trans="log10")+
-  #scale_x_continuous(trans="log10")+
+  scale_y_continuous(trans="log10")+
+  scale_x_continuous(trans="log10")+
   facet_wrap(~model,scales="free")
 
 windows()
 ggplot(frame.all[frame.all$state=="mucous membranes",])+geom_line(aes(x=time*timestep,y=means,group=model,color=model))+
-  geom_ribbon(aes(x=time*timestep,ymin=means-sd*1.96/sqrt(1000),ymax=means+sd*1.96/sqrt(1000),group=model,fill=model),alpha=0.3)
+  geom_ribbon(aes(x=time*timestep,ymin=means-sd*1.96/sqrt(1000),ymax=means+sd*1.96/sqrt(1000),group=model,fill=model),alpha=0.3)+
+  scale_y_continuous(trans="log10")+scale_x_continuous(trans="log10")
+
+
+
+#Note to self to redo this so we have max doses for all iters (not mean of all iter)
+
+frame.all2<-data.frame(dose=c(doseA,doseB,doseC),
+                       model=c(rep("Model A",iter),rep("Model B",iter),rep("Model C",iter)))
+
+my_comparisons<-list(c("Model A","Model B"),
+                  c("Model B","Model C"),
+                  c("Model A","Model C"))
+
+windows()
+ggplot(frame.all2)+geom_violin(aes(x=model,y=dose,fill=model),draw_quantiles=c(0.25,0.5,0.75),alpha=0.2)+
+  scale_y_continuous(trans="log10",name="Dose")+
+  scale_x_discrete(name="")+
+  scale_fill_manual(name="",values=c("#3333FF","#FFFF00","#00CCCC"))+
+  theme_pubr()+
+  theme(axis.text=element_text(size=16),axis.title=element_text(size=16),legend.text = element_text(size=16))
+
+
+summary(frame.all2$dose[frame.all2$model=="Model C"])
+sd(frame.all2$dose[frame.all2$model=="Model C"])
+
+summary(frame.all2$dose[frame.all2$model=="Model B"])
+sd(frame.all2$dose[frame.all2$model=="Model B"])
+
+summary(frame.all2$dose[frame.all2$model=="Model A"])
+sd(frame.all2$dose[frame.all2$model=="Model A"])
