@@ -2,7 +2,21 @@ sim.function<-function(type=c("primary"),model=c("A"),timestep=0.001,iter=1000){
   
   matrix.all<-list()
   
-  lengthsim<-(((1/timestep)*duration)+1)
+  lengthsim<<-(((1/timestep)*duration)+1)
+  
+  source('defining_parameters.R')
+  
+  if (type=="sensitivity"){
+    
+    modeltype<<-model
+    
+    source('sensitivity_param.R') 
+    
+  }else{
+    
+    source('defining_rates.R') #note that probabilities are defined within the simulation code function
+    
+  }
   
   for (l in 1:iter){
     
@@ -66,8 +80,16 @@ sim.function<-function(type=c("primary"),model=c("A"),timestep=0.001,iter=1000){
       
       #initial conditions
       matrix.save[1,1]<-small.fome.virus
-      matrix.save[2,1]<-large.fome.virus
+      matrix.save[1,2]<-large.fome.virus
       matrix.save[1,3:6]<-0
+      
+      colnames(matrix.save)<-c("small fomite","large fomite",
+                               "non-fingertip","fingertip",
+                               "loss of viability", "mucous membranes")
+      
+      source('defining_probabilities_modelC.R')
+      
+     
     }
     
     
@@ -77,10 +99,10 @@ sim.function<-function(type=c("primary"),model=c("A"),timestep=0.001,iter=1000){
         
         if(model=="A"){
           
-        matrix.save[i,1]<-matrix.save[i-1,1]*probs[1,1]-matrix.save[i-1,1]*sum(probs[1,2:3])+
+        matrix.save[i,1]<-matrix.save[i-1,1]-matrix.save[i-1,1]*sum(probs[1,2:3])+
           matrix.save[i-1,2]*probs[2,1]
         
-        matrix.save[i,2]<-matrix.save[i-1,2]*probs[2,2]-matrix.save[i-1,2]*sum(probs[2,1],probs[2,3:4])+
+        matrix.save[i,2]<-matrix.save[i-1,2]-matrix.save[i-1,2]*sum(probs[2,1],probs[2,3:4])+
           matrix.save[i-1,1]*probs[1,2]
         
         matrix.save[i,3]<-matrix.save[i-1,3]+matrix.save[i-1,1]*probs[1,3]+matrix.save[i-1,2]*probs[2,3]
@@ -107,16 +129,16 @@ sim.function<-function(type=c("primary"),model=c("A"),timestep=0.001,iter=1000){
           
         #model C
           
-        matrix.save[i,1]<-matrix.save[i-1,1]*probs[1,1]-matrix.save[i-1,1]*sum(probs[1,2:6])+
+        matrix.save[i,1]<-matrix.save[i-1,1]-matrix.save[i-1,1]*sum(probs[1,2:6])+
           matrix.save[i-1,3]*probs[3,1]+matrix.save[i-1,4]*probs[4,1]
         
-        matrix.save[i,2]<-matrix.save[i-1,2]*probs[2,2]-matrix.save[i-1,2]*sum(probs[2,1],probs[2,3:6])+
+        matrix.save[i,2]<-matrix.save[i-1,2]-matrix.save[i-1,2]*sum(probs[2,1],probs[2,3:6])+
           matrix.save[i-1,3]*probs[3,2]+matrix.save[i-1,4]*probs[4,2]
         
-        matrix.save[i,3]<-matrix.save[i-1,3]*probs[3,3]-matrix.save[i-1,3]*sum(probs[3,1:2],probs[3,4:6])+
+        matrix.save[i,3]<-matrix.save[i-1,3]-matrix.save[i-1,3]*sum(probs[3,1:2],probs[3,4:6])+
           matrix.save[i-1,1]*probs[1,3]+matrix.save[i-1,2]*probs[2,3]
         
-        matrix.save[i,4]<-matrix.save[i-1,4]*probs[4,4]-matrix.save[i-1,4]*sum(probs[4,1:3],probs[4,5:6])+
+        matrix.save[i,4]<-matrix.save[i-1,4]-matrix.save[i-1,4]*sum(probs[4,1:3],probs[4,5:6])+
           matrix.save[i-1,1]*probs[1,4]+matrix.save[i-1,2]*probs[2,4]
         
         matrix.save[i,5]<-matrix.save[i-1,5]+matrix.save[i-1,1]*probs[1,5]+matrix.save[i-1,2]*probs[2,5]+
@@ -125,6 +147,24 @@ sim.function<-function(type=c("primary"),model=c("A"),timestep=0.001,iter=1000){
         matrix.save[i,6]<-matrix.save[i-1,6]+matrix.save[i-1,4]*probs[4,6]
           
         }
+        
+      }else{
+        matrix.save[i,1]<-matrix.save[i-1,1]-matrix.save[i-1,1]*sum(probs[1,2:6])+
+          matrix.save[i-1,3]*probs[3,1]+matrix.save[i-1,4]*probs[4,1]
+        
+        matrix.save[i,2]<-matrix.save[i-1,2]-matrix.save[i-1,2]*sum(probs[2,1],probs[2,3:6])+
+          matrix.save[i-1,3]*probs[3,2]+matrix.save[i-1,4]*probs[4,2]
+        
+        matrix.save[i,3]<-matrix.save[i-1,3]-matrix.save[i-1,3]*sum(probs[3,1:2],probs[3,4:6])+
+          matrix.save[i-1,1]*probs[1,3]+matrix.save[i-1,2]*probs[2,3]
+        
+        matrix.save[i,4]<-matrix.save[i-1,4]-matrix.save[i-1,4]*sum(probs[4,1:3],probs[4,5:6])+
+          matrix.save[i-1,1]*probs[1,4]+matrix.save[i-1,2]*probs[2,4]
+        
+        matrix.save[i,5]<-matrix.save[i-1,5]+matrix.save[i-1,1]*probs[1,5]+matrix.save[i-1,2]*probs[2,5]+
+          matrix.save[i-1,3]*probs[3,5]+matrix.save[i-1,4]*probs[4,5]
+        
+        matrix.save[i,6]<-matrix.save[i-1,6]+matrix.save[i-1,4]*probs[4,6]
       }
       
     } #end of exposure simulation loop
