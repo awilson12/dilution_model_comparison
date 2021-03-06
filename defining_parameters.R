@@ -39,6 +39,14 @@ S.F.fomite<-runif(iter,0.2,1)
 S.NF<-runif(iter,0.03,0.18)
 A.fingertip<-runif(iter,17.8,32.1)
 A.nonfingertip<-runif(iter,412.9,517.2)
+#frac.small<-runif(iter,0,1)
+
+#H.sm.finger<-(frac.small)*H.fome.finger
+#H.lg.finger<-(1-frac.small)*H.fome.finger
+#H.sm.nonfinger<-(frac.small)*H.fome.nonfinger
+#H.lg.nonfinger<-(1-frac.small)*H.fome.nonfinger
+
+
 H.sm.finger<-(2/3)*H.fome.finger
 H.lg.finger<-(1/3)*H.fome.finger
 H.sm.nonfinger<-(2/3)*H.fome.nonfinger
@@ -47,6 +55,9 @@ H.lg.nonfinger<-(1/3)*H.fome.nonfinger
 #Paramters for Model C Only
 SA.smallfomite<-100 #cm^2
 SA.largefomite<-20000 #cm^2
+
+#small.fome.virus<-runif(iter,0,200) #changed on 1/25 to test sensitivity
+#large.fome.virus<-200-small.fome.virus #changed on 1/25 to test sensitivity
 
 small.fome.virus<-100
 large.fome.virus<-100
