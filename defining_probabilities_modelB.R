@@ -51,12 +51,12 @@ P.4.total<-c(0,0,0,1,0)
 
 P.5.total<-c(0,0,0,0,1)
 
-probs<-matrix(nrow=5,ncol=5)
-probs[1,]<-P.1.total
-probs[2,]<-P.2.total
-probs[3,]<-P.3.total
-probs[4,]<-P.4.total
-probs[5,]<-P.5.total
+PB<-matrix(nrow=5,ncol=5)
+PB[1,]<-P.1.total
+PB[2,]<-P.2.total
+PB[3,]<-P.3.total
+PB[4,]<-P.4.total
+PB[5,]<-P.5.total
 
 
 

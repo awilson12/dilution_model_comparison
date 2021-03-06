@@ -64,13 +64,13 @@ P.5.total<-c(0,0,0,0,1,0)
 
 P.6.total<-c(0,0,0,0,0,1)
 
-probs<-matrix(nrow=6,ncol=6)
-probs[1,]<-P.1.total
-probs[2,]<-P.2.total
-probs[3,]<-P.3.total
-probs[4,]<-P.4.total
-probs[5,]<-P.5.total
-probs[6,]<-P.5.total
+PC<-matrix(nrow=6,ncol=6)
+PC[1,]<-P.1.total
+PC[2,]<-P.2.total
+PC[3,]<-P.3.total
+PC[4,]<-P.4.total
+PC[5,]<-P.5.total
+PC[6,]<-P.5.total
 
 
 

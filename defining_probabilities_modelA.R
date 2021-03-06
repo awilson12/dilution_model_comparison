@@ -38,11 +38,11 @@ P.3.total<-c(0,0,1,0)
 
 P.4.total<-c(0,0,0,1)
 
-probs<-matrix(nrow=4,ncol=4)
-probs[1,]<-P.1.total
-probs[2,]<-P.2.total
-probs[3,]<-P.3.total
-probs[4,]<-P.4.total
+PA<-matrix(nrow=4,ncol=4)
+PA[1,]<-P.1.total
+PA[2,]<-P.2.total
+PA[3,]<-P.3.total
+PA[4,]<-P.4.total
 
 
 
