@@ -124,7 +124,47 @@ sim.function<-function(type=c("primary"),model=c("A"),timestep=0.001,iter=1000){
       
     } #end of exposure simulation loop
     
-    matrix.all[[l]]<-matrix.save
+    #adjusting for SA
+    
+    matrix.save.temp<-matrix.save
+    
+    if(model=="A"){
+      
+      #fomites
+      matrix.save.temp[2,]<-matrix.save[2,]/A.hand[l]
+      
+      #hands
+      matrix.save.temp[1,]<-matrix.save[1,]/total.fomeSA
+        
+    }else if (model=="B"){
+      
+      #fingertip
+      matrix.save.temp[2,]<-matrix.save[2,]/A.fingertip[l]
+      
+      #nonfingertip
+      matrix.save.temp[3,]<-matrix.save[3,]/A.nonfingertip[l]
+      
+      #fomites
+      matrix.save.temp[1,]<-matrix.save[1,]/total.fomeSA
+  
+      
+    }else if (model=="C"){
+      
+      #fingertip/
+      matrix.save.temp[4,]<-matrix.save[4,]/A.fingertip[l]
+      
+      #nonfingertip
+      matrix.save.temp[3,]<-matrix.save[3,]/A.nonfingertip[l]
+      
+      #small fomite
+      matrix.save.temp[1,]<-matrix.save[1,]/SA.smallfomite
+      
+      #large fomite
+      matrix.save.temp[2,]<-matrix.save[2,]/SA.largefomite
+      
+    }
+    
+    matrix.all[[l]]<-matrix.save.temp
     
   } #end of iteraiton loop
   matrix.list<<-matrix.all
