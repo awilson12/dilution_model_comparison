@@ -70,7 +70,7 @@ PC[2,]<-P.2.total
 PC[3,]<-P.3.total
 PC[4,]<-P.4.total
 PC[5,]<-P.5.total
-PC[6,]<-P.5.total
+PC[6,]<-P.6.total
 
 
 
