@@ -2,7 +2,7 @@ require(truncdist)
 require(ggplot2)
 require(ggpubr)
 
-iter<-10000
+iter<-1000
 timestep<-0.001
 
 source('simulation_code_dilution_v2.R')
@@ -53,7 +53,7 @@ means<-c(mucous.mean,hands.mean,fomites.mean)
 sd<-c(mucous.sd,hands.sd,fomites.sd)
 state<-c(rep("mucous membranes",lengthsim),rep("hands",lengthsim),
          rep("fomites",lengthsim))
-time<-rep(1:lengthsim,3)
+time<-rep(0:(lengthsim-1),3)
 
 frame.model.A<-data.frame(means=means,sd=sd,state=state,time=time,
                           model="Model A")
@@ -113,7 +113,7 @@ means<-c(mucous.mean,fingertip.mean,nonfingertip.mean,fomites.mean)
 sd<-c(mucous.sd,fingertip.sd,nonfingertip.sd,fomites.sd)
 state<-c(rep("mucous membranes",lengthsim),rep("fingertip hand area",lengthsim),
          rep("non-fingertip hand area",lengthsim),rep("fomites",lengthsim))
-time<-rep(1:lengthsim,4)
+time<-rep(0:(lengthsim-1),4)
 
 frame.model.B<-data.frame(means=means,sd=sd,state=state,time=time,
                           model="Model B")
@@ -199,7 +199,7 @@ sd<-c(mucous.sd,fingertip.sd,nonfingertip.sd,
 state<-c(rep("mucous membranes",lengthsim),rep("fingertip hand area",lengthsim),
          rep("non-fingertip hand area",lengthsim),rep("small fomite",lengthsim),
          rep("large fomite",lengthsim))
-time<-rep(1:lengthsim,5)
+time<-rep(0:(lengthsim-1),5)
 
 frame.model.C<-data.frame(means=means,sd=sd,state=state,time=time,
                           model="Model C")
@@ -217,15 +217,29 @@ windows()
 ggplot(frame.all)+geom_line(aes(x=time,y=means,group=state,color=state))+
   geom_ribbon(aes(x=time,ymin=means-sd,ymax=means+sd,group=state,fill=state),alpha=0.3)+
   scale_y_continuous(trans="log10")+
-  scale_x_continuous(trans="log10")+
+  #scale_x_continuous(trans="log10")+
   facet_wrap(~model,scales="free")
 
 windows()
 ggplot(frame.all[frame.all$state=="mucous membranes",])+geom_line(aes(x=time*timestep,y=means,group=model,color=model))+
   geom_ribbon(aes(x=time*timestep,ymin=means-sd*1.96/sqrt(1000),ymax=means+sd*1.96/sqrt(1000),group=model,fill=model),alpha=0.3)+
-  scale_y_continuous(trans="log10")+scale_x_continuous(trans="log10")
+  scale_y_continuous(trans="log10")
 
+windows()
+ggplot(frame.all[frame.all$state=="hands"|frame.all$state=="non-fingertip hand area" | frame.all$state=="fingertip hand area",])+
+  geom_line(aes(x=time*timestep,y=means,group=interaction(model,state),color=state))+
+  geom_ribbon(aes(x=time*timestep,ymin=means-sd*1.96/sqrt(1000),ymax=means+sd*1.96/sqrt(1000),group=interaction(model,state),fill=state),alpha=0.3)+
+  scale_y_continuous(trans="log10")+
+  facet_wrap(~model)
 
+windows()
+ggplot(frame.all[frame.all$state=="small fomite"|frame.all$state=="large fomite" | frame.all$state=="fomites",])+
+  geom_line(aes(x=time*timestep,y=means,group=interaction(model,state),color=state))+
+  geom_ribbon(aes(x=time*timestep,ymin=means-sd*1.96/sqrt(1000),ymax=means+sd*1.96/sqrt(1000),group=interaction(model,state),fill=state),alpha=0.3)+
+  scale_y_continuous(trans="log10")+
+  facet_wrap(~model)
+
+write.csv(frame.all,'frame.all.20210308.csv')
 
 #Note to self to redo this so we have max doses for all iters (not mean of all iter)
 
