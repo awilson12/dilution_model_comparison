@@ -2,8 +2,15 @@ require(truncdist)
 require(ggplot2)
 require(ggpubr)
 
+#clear environment
+rm(list = ls())
+
 iter<-1000
 timestep<-0.001
+duration<-20
+
+set.seed(30) #set after checking variabilty from one to another 
+#with 5,000 iterations and 0.001 timestep
 
 source('simulation_code_dilution_v2.R')
 
@@ -213,33 +220,75 @@ ggplot(frame.ratio)+geom_point(aes(x=smallfomite.conc/200,y=mucousmax))+
 #-------------------------frame all---------------------------------------------------------------
 frame.all<-rbind(frame.model.A,frame.model.B,frame.model.C)
 
-windows()
-ggplot(frame.all)+geom_line(aes(x=time,y=means,group=state,color=state))+
-  geom_ribbon(aes(x=time,ymin=means-sd,ymax=means+sd,group=state,fill=state),alpha=0.3)+
-  scale_y_continuous(trans="log10")+
-  #scale_x_continuous(trans="log10")+
-  facet_wrap(~model,scales="free")
+#windows()
+#ggplot(frame.all)+geom_line(aes(x=time,y=means,group=state,color=state))+
+#  geom_ribbon(aes(x=time,ymin=means-sd,ymax=means+sd,group=state,fill=state),alpha=0.3)+
+#  scale_y_continuous(trans="log10")+
+#  #scale_x_continuous(trans="log10")+
+#  scale_y_continuous(trans="log10")+
+#  scale_fill_discrete(name="")+
+#  scale_color_discrete(name="")+
+#  facet_wrap(~model)+
+#  theme_pubr()+
+#  theme(axis.text=element_text(size=16),axis.title=element_text(size=16),legend.text=element_text(size=16))
 
-windows()
-ggplot(frame.all[frame.all$state=="mucous membranes",])+geom_line(aes(x=time*timestep,y=means,group=model,color=model))+
+
+#windows()
+A<-ggplot(frame.all[frame.all$state=="mucous membranes",])+geom_line(aes(x=time*timestep,y=means,group=model,color=model))+
   geom_ribbon(aes(x=time*timestep,ymin=means-sd*1.96/sqrt(1000),ymax=means+sd*1.96/sqrt(1000),group=model,fill=model),alpha=0.3)+
-  scale_y_continuous(trans="log10")
+  scale_y_continuous(trans="log10",name="Dose (# Viral Particles)")+
+  scale_x_continuous(name="Time (min)")+
+  scale_fill_discrete(name="")+
+  scale_color_discrete(name="")+
+  theme_pubr()+
+  theme(axis.text=element_text(size=16),axis.title=element_text(size=16),legend.text=element_text(size=16),strip.text=element_text(size=16))
 
-windows()
-ggplot(frame.all[frame.all$state=="hands"|frame.all$state=="non-fingertip hand area" | frame.all$state=="fingertip hand area",])+
+
+#windows()
+B<-ggplot(frame.all[frame.all$state=="hands"|frame.all$state=="non-fingertip hand area" | frame.all$state=="fingertip hand area",])+
+  #geom_line(aes(x=time*timestep,y=means,group=interaction(model,state),color=state))+
+  geom_ribbon(aes(x=time*timestep,ymin=means-sd*1.96/sqrt(1000),ymax=means+sd*1.96/sqrt(1000),group=interaction(model,state),fill=state),alpha=0.3)+
+  geom_ribbon(aes(x=time*timestep,ymin=means-sd,ymax=means+sd,group=interaction(model,state),fill=state),alpha=0.3)+
+  scale_y_continuous(trans="log10",name=expression("# Viral Particles/cm"^2))+
+  scale_x_continuous(name="Time (min)")+
+  scale_fill_discrete(name="")+
+  scale_color_discrete(name="")+
+  facet_wrap(~model)+
+  theme_pubr()+
+  theme(axis.text=element_text(size=16),axis.title=element_text(size=16),legend.text=element_text(size=16),strip.text=element_text(size=16))
+
+
+#windows()
+#ggplot(frame.model.B[frame.model.B$state=="hands"|frame.model.B$state=="non-fingertip hand area" | frame.model.B$state=="fingertip hand area",])+
+#  geom_line(aes(x=time*timestep,y=means,group=state,color=state))+
+#  geom_ribbon(aes(x=time*timestep,ymin=means-sd*1.96/sqrt(1000),ymax=means+sd*1.96/sqrt(1000),group=state,fill=state),alpha=0.3)+
+#  scale_y_continuous(trans="log10")
+
+#windows()
+#ggplot(frame.model.B[frame.model.C$state=="hands"|frame.model.C$state=="non-fingertip hand area" | frame.model.C$state=="fingertip hand area",])+
+#  geom_line(aes(x=time*timestep,y=means,group=state,color=state))+
+#  geom_ribbon(aes(x=time*timestep,ymin=means-sd*1.96/sqrt(1000),ymax=means+sd*1.96/sqrt(1000),group=state,fill=state),alpha=0.3)+
+#  scale_y_continuous(trans="log10")
+
+#windows()
+C<-ggplot(frame.all[frame.all$state=="small fomite"|frame.all$state=="large fomite" | frame.all$state=="fomites" & frame.all$model!="Model A",])+
   geom_line(aes(x=time*timestep,y=means,group=interaction(model,state),color=state))+
   geom_ribbon(aes(x=time*timestep,ymin=means-sd*1.96/sqrt(1000),ymax=means+sd*1.96/sqrt(1000),group=interaction(model,state),fill=state),alpha=0.3)+
-  scale_y_continuous(trans="log10")+
-  facet_wrap(~model)
+  #geom_ribbon(aes(x=time*timestep,ymin=means-sd,ymax=means+sd,group=interaction(model,state),fill=state),alpha=0.3)+
+  scale_y_continuous(trans="log10",name=expression("# Viral Particles/cm"^2))+
+  scale_x_continuous(name="Time (min)")+
+  scale_fill_discrete(name="")+
+  scale_color_discrete(name="")+
+  theme_pubr()+
+  theme(axis.text=element_text(size=16),axis.title=element_text(size=16),legend.text=element_text(size=16),strip.text=element_text(size=16))
 
 windows()
-ggplot(frame.all[frame.all$state=="small fomite"|frame.all$state=="large fomite" | frame.all$state=="fomites",])+
-  geom_line(aes(x=time*timestep,y=means,group=interaction(model,state),color=state))+
-  geom_ribbon(aes(x=time*timestep,ymin=means-sd*1.96/sqrt(1000),ymax=means+sd*1.96/sqrt(1000),group=interaction(model,state),fill=state),alpha=0.3)+
-  scale_y_continuous(trans="log10")+
-  facet_wrap(~model)
+A
 
-write.csv(frame.all,'frame.all.20210308.csv')
+
+st=format(Sys.time(), "%Y-%m-%d")
+filename<-paste("frameall_",st, ".csv", sep = "")
+write.csv(frame.all,filename)
 
 #Note to self to redo this so we have max doses for all iters (not mean of all iter)
 
@@ -259,11 +308,14 @@ ggplot(frame.all2)+geom_violin(aes(x=model,y=dose,fill=model),draw_quantiles=c(0
   theme(axis.text=element_text(size=16),axis.title=element_text(size=16),legend.text = element_text(size=16))
 
 
-summary(frame.all2$dose[frame.all2$model=="Model C"])
-sd(frame.all2$dose[frame.all2$model=="Model C"])
+signif(summary(frame.all2$dose[frame.all2$model=="Model A"]),2)
+signif(IQR((frame.all2$dose[frame.all2$model=="Model A"])),2)
+signif(sd(frame.all2$dose[frame.all2$model=="Model A"]),2)
 
-summary(frame.all2$dose[frame.all2$model=="Model B"])
-sd(frame.all2$dose[frame.all2$model=="Model B"])
+signif(summary(frame.all2$dose[frame.all2$model=="Model B"]),2)
+signif(IQR((frame.all2$dose[frame.all2$model=="Model B"])),2)
+signif(sd(frame.all2$dose[frame.all2$model=="Model B"]),2)
 
-summary(frame.all2$dose[frame.all2$model=="Model A"])
-sd(frame.all2$dose[frame.all2$model=="Model A"])
+signif(summary(frame.all2$dose[frame.all2$model=="Model C"]),2)
+signif(IQR((frame.all2$dose[frame.all2$model=="Model C"])),2)
+signif(sd(frame.all2$dose[frame.all2$model=="Model C"]),2)
