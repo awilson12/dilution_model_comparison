@@ -38,9 +38,6 @@ ggplot(frame.ratio)+geom_point(aes(x=(smallfomite.conc/200)*100,y=mucousmax),siz
 
 
 
-
-
-
 # PART 2: Sensitivity models A, B, C, and D-----------------------------------------------------------------------------------
 
 
@@ -128,16 +125,16 @@ A<-ggplot(data=frame.model.sensitivity[frame.model.sensitivity$state=="mucous me
   geom_line(aes(x=time*timestep,y=means,color=model),size=1)+
   geom_ribbon(aes(x=time*timestep,ymax=means+sd*1.96/sqrt(iter),ymin=means-sd*1.96/sqrt(iter),fill=model),alpha=0.2)+
   scale_x_continuous(name="Time (minutes)")+
-  scale_y_continuous(name="Mean Dose")+
+  scale_y_continuous(name="Dose (# viral particles)")+
   scale_color_discrete(name="")+
   scale_fill_discrete(name="")+
   theme_pubr()+
   theme(axis.text=element_text(size=16),axis.title=element_text(size=16),legend.text=element_text(size=16),title=element_text(size=18))+
   ggtitle("A")
 
-
-
-
+st=format(Sys.time(), "%Y-%m-%d")
+filename<-paste("sensitivity_A_thru_D",st, ".csv", sep = "")
+write.csv(frame.model.sensitivity,filename)
 
 
 # PART 3: Sensitivity models E and F ---------------------------------------------------------------------------------------------------------
@@ -204,8 +201,8 @@ for(a in 1:length(model.sensitivity.2)){
            smallfomite.mean,largefomite.mean)
   sd<-c(mucous.sd,fingertip.sd,nonfingertip.sd,
         smallfomite.sd,largefomite.sd)
-  state<-c(rep("mucous membranes",lengthsim),rep("fingertip hand area",lengthsim),
-           rep("non-fingertip hand area",lengthsim),rep("small fomite",lengthsim),
+  state<-c(rep("mucous membranes",lengthsim),rep("hand 2",lengthsim),
+           rep("hand 1",lengthsim),rep("small fomite",lengthsim),
            rep("large fomite",lengthsim))
   time<-rep(1:lengthsim,5)
   
@@ -221,6 +218,11 @@ for(a in 1:length(model.sensitivity.2)){
   
 }
 
+st=format(Sys.time(), "%Y-%m-%d")
+filename<-paste("sensitivity_E_and_F",st, ".csv", sep = "")
+write.csv(frame.model.sensitivity2,filename)
+
+
 windows()
 B<-ggplot(data=frame.model.sensitivity2[frame.model.sensitivity2$state=="mucous membranes",])+
   geom_line(aes(x=time*timestep,y=means,color=model),size=1)+
@@ -234,3 +236,21 @@ B<-ggplot(data=frame.model.sensitivity2[frame.model.sensitivity2$state=="mucous 
   ggtitle("B")
 
 ggarrange(A,B)
+
+#frame.model.sensitivity<-subset(frame.model.sensitivity,select=c(-X))
+frame.sensitivity.all<-rbind(frame.model.sensitivity,frame.model.sensitivity2)
+
+st=format(Sys.time(), "%Y-%m-%d")
+filename<-paste("sensitivity_all",st, ".csv", sep = "")
+write.csv(frame.sensitivity.all,filename)
+
+windows()
+ggplot(data=frame.sensitivity.all[frame.sensitivity.all$state=="mucous membranes",])+
+  geom_line(aes(x=time*timestep,y=means,color=model),size=1)+
+  geom_ribbon(aes(x=time*timestep,ymax=means+sd*1.96/sqrt(iter),ymin=means-sd*1.96/sqrt(iter),fill=model),alpha=0.2)+
+  scale_x_continuous(name="Time (min)")+
+  scale_y_continuous(name="Dose (# viral particles)")+
+  scale_color_discrete(name="")+
+  scale_fill_discrete(name="")+
+  theme_pubr()+
+  theme(axis.text=element_text(size=16),axis.title=element_text(size=16),legend.text=element_text(size=16),title=element_text(size=18))
