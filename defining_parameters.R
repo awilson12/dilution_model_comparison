@@ -1,7 +1,5 @@
 #Parameters relevant to all models----------------------------------------
 
-duration<-20 #min
-
 TE.HF<-runif(iter,0.01,0.406)
 TE.FH<-runif(iter,0.01,0.406)
 TE.HM<-rtrunc(iter,"norm",mean=0.3390,sd=0.1318,a=0,b=1)
