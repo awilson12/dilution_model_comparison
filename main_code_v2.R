@@ -208,6 +208,11 @@ frame.model.C<-data.frame(means=means,sd=sd,state=state,time=time,
 frame.ratio<-data.frame(mucousmax=mucous.max,smallfomite.conc=smallfomite.conc,
                         largefomite.conc=largefomite.conc)
 
+st=format(Sys.time(), "%Y-%m-%d")
+filename<-paste("frameratio_",st, ".csv", sep = "")
+write.csv(frame.ratio,filename)
+
+
 #-------------------------frame all---------------------------------------------------------------
 #frame.all<-rbind(frame.model.A,frame.model.B,frame.model.C)
 
