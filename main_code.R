@@ -5,7 +5,7 @@ require(ggpubr)
 #clear environment
 rm(list = ls())
 
-iter<-1000
+iter<-5000
 timestep<-0.001
 duration<-20
 
@@ -238,21 +238,21 @@ A<-ggplot(frame.all[frame.all$state=="mucous membranes",])+geom_line(aes(x=time*
   geom_ribbon(aes(x=time*timestep,ymin=means-sd*1.96/sqrt(1000),ymax=means+sd*1.96/sqrt(1000),group=model,fill=model),alpha=0.3)+
   scale_y_continuous(trans="log10",name="Dose (# Viral Particles)")+
   scale_x_continuous(name="Time (min)")+
-  scale_fill_discrete(name="")+
-  scale_color_discrete(name="")+
+  scale_fill_manual(name="",values=c("#3333FF","#FF3311","#00CCCC"))+
+  scale_color_manual(name="",values=c("#3333FF","#FF3311","#00CCCC"))+
   theme_pubr()+
   theme(axis.text=element_text(size=16),axis.title=element_text(size=16),legend.text=element_text(size=16),strip.text=element_text(size=16))
 
 
 #windows()
 B<-ggplot(frame.all[frame.all$state=="hands"|frame.all$state=="non-fingertip hand area" | frame.all$state=="fingertip hand area",])+
-  #geom_line(aes(x=time*timestep,y=means,group=interaction(model,state),color=state))+
+  geom_line(aes(x=time*timestep,y=means,group=interaction(model,state),color=state))+
   geom_ribbon(aes(x=time*timestep,ymin=means-sd*1.96/sqrt(1000),ymax=means+sd*1.96/sqrt(1000),group=interaction(model,state),fill=state),alpha=0.3)+
-  geom_ribbon(aes(x=time*timestep,ymin=means-sd,ymax=means+sd,group=interaction(model,state),fill=state),alpha=0.3)+
+  #geom_ribbon(aes(x=time*timestep,ymin=means-sd,ymax=means+sd,group=interaction(model,state),fill=state),alpha=0.3)+
   scale_y_continuous(trans="log10",name=expression("# Viral Particles/cm"^2))+
   scale_x_continuous(name="Time (min)")+
-  scale_fill_discrete(name="")+
-  scale_color_discrete(name="")+
+  scale_fill_manual(name="",values=c("#3333FF","#FF3311","#00CCCC"))+
+  scale_color_manual(name="",values=c("#3333FF","#FF3311","#00CCCC"))+
   facet_wrap(~model)+
   theme_pubr()+
   theme(axis.text=element_text(size=16),axis.title=element_text(size=16),legend.text=element_text(size=16),strip.text=element_text(size=16))
@@ -271,14 +271,19 @@ B<-ggplot(frame.all[frame.all$state=="hands"|frame.all$state=="non-fingertip han
 #  scale_y_continuous(trans="log10")
 
 #windows()
-C<-ggplot(frame.all[frame.all$state=="small fomite"|frame.all$state=="large fomite" | frame.all$state=="fomites" & frame.all$model!="Model A",])+
+frame.all$state[frame.all$state=="small fomite"]<-"small env surf"
+frame.all$state[frame.all$state=="large fomite"]<-"large env surf"
+
+frame.all$state[frame.all$state=="fomites"]<-"combined env surf"
+
+C<-ggplot(frame.all[frame.all$state=="small env surf"|frame.all$state=="large env surf" | frame.all$state=="combined env surf" & frame.all$model!="Model A",])+
   geom_line(aes(x=time*timestep,y=means,group=interaction(model,state),color=state))+
   geom_ribbon(aes(x=time*timestep,ymin=means-sd*1.96/sqrt(1000),ymax=means+sd*1.96/sqrt(1000),group=interaction(model,state),fill=state),alpha=0.3)+
   #geom_ribbon(aes(x=time*timestep,ymin=means-sd,ymax=means+sd,group=interaction(model,state),fill=state),alpha=0.3)+
   scale_y_continuous(trans="log10",name=expression("# Viral Particles/cm"^2))+
   scale_x_continuous(name="Time (min)")+
-  scale_fill_discrete(name="")+
-  scale_color_discrete(name="")+
+  scale_fill_manual(name="",values=c("#3333FF","#FF3311","#00CCCC"))+
+  scale_color_manual(name="",values=c("#3333FF","#FF3311","#00CCCC"))+
   theme_pubr()+
   theme(axis.text=element_text(size=16),axis.title=element_text(size=16),legend.text=element_text(size=16),strip.text=element_text(size=16))
 
@@ -303,9 +308,9 @@ windows()
 ggplot(frame.all2)+geom_violin(aes(x=model,y=dose,fill=model),draw_quantiles=c(0.25,0.5,0.75),alpha=0.2)+
   scale_y_continuous(trans="log10",name="Dose")+
   scale_x_discrete(name="")+
-  scale_fill_manual(name="",values=c("#3333FF","#FFFF00","#00CCCC"))+
+  scale_fill_manual(name="",values=c("#3333FF","#FF3311","#00CCCC"))+
   theme_pubr()+
-  theme(axis.text=element_text(size=16),axis.title=element_text(size=16),legend.text = element_text(size=16))
+  theme(axis.text=element_text(size=16),axis.title=element_text(size=16),legend.text = element_text(size=16),legend.position='none')
 
 
 signif(summary(frame.all2$dose[frame.all2$model=="Model A"]),2)

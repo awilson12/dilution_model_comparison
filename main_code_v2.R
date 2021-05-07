@@ -2,7 +2,7 @@ require(truncdist)
 require(ggplot2)
 require(ggpubr)
 
-iter<-1000
+iter<-5000
 timestep<-0.001
 
 source('simulation_code_dilution_v3.R')
