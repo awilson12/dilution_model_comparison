@@ -131,7 +131,7 @@ sim.function<-function(type=c("primary"),model=c("A"),timestep=0.001,iter=1000){
     if(model=="A"){
       
       #fomites
-      matrix.save.temp[2,]<-matrix.save[2,]/A.hand[l]
+      matrix.save.temp[2,]<-matrix.save[2,]/(A.hand[l]*2)
       
       #hands
       matrix.save.temp[1,]<-matrix.save[1,]/total.fomeSA
@@ -139,10 +139,10 @@ sim.function<-function(type=c("primary"),model=c("A"),timestep=0.001,iter=1000){
     }else if (model=="B"){
       
       #fingertip
-      matrix.save.temp[2,]<-matrix.save[2,]/A.fingertip[l]
+      matrix.save.temp[2,]<-matrix.save[2,]/(A.fingertip[l]*2)
       
       #nonfingertip
-      matrix.save.temp[3,]<-matrix.save[3,]/A.nonfingertip[l]
+      matrix.save.temp[3,]<-matrix.save[3,]/(A.nonfingertip[l]*2)
       
       #fomites
       matrix.save.temp[1,]<-matrix.save[1,]/total.fomeSA
@@ -151,10 +151,10 @@ sim.function<-function(type=c("primary"),model=c("A"),timestep=0.001,iter=1000){
     }else if (model=="C"){
       
       #fingertip/
-      matrix.save.temp[4,]<-matrix.save[4,]/A.fingertip[l]
+      matrix.save.temp[4,]<-matrix.save[4,]/(A.fingertip[l]*2)
       
       #nonfingertip
-      matrix.save.temp[3,]<-matrix.save[3,]/A.nonfingertip[l]
+      matrix.save.temp[3,]<-matrix.save[3,]/(A.nonfingertip[l]*2)
       
       #small fomite
       matrix.save.temp[1,]<-matrix.save[1,]/SA.smallfomite
