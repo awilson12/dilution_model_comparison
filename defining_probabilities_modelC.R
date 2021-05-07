@@ -36,7 +36,7 @@ P.2.total<-c(P.2[1],P.2.2,P.2[2:5])
 
 
 #ROW 3----------------------------------------------------------------------------------------
-lambdas.3<-c(lambda.3.1.C[l],lambda.3.2.C[l],0,lambda.3.5.B[l],0)
+lambdas.3<-c(lambda.3.1.C[l],lambda.3.2.C[l],0,lambda.3.5.C[l],0)
 
 lambda.3.T<-sum(lambdas.3)
 
