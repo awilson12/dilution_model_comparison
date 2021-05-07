@@ -28,8 +28,11 @@ group.virus<-200 #virus on surfaces total
 
 #Parameters for Model B Only---------------------------------------------
 
-H.fome.right<-0.25*H.fome
-H.fome.left<-0.75*H.fome
+#H.fome.right<-0.25*H.fome
+#H.fome.left<-0.75*H.fome
+
+H.fome.right<-0.1*H.fome
+H.fome.left<-0.9*H.fome
   
 #Parameters for Model B & C-----------------------------------------------
 S.F<-0.20
@@ -44,6 +47,11 @@ S.NF<-runif(iter,0.03,0.18)
 #H.sm.nonfinger<-(frac.small)*H.fome.nonfinger
 #H.lg.nonfinger<-(1-frac.small)*H.fome.nonfinger
 
+
+#H.sm.right<-(2/3)*H.fome.right
+#H.lg.right<-(1/3)*H.fome.right
+#H.sm.left<-(2/3)*H.fome.left
+#H.lg.left<-(1/3)*H.fome.left
 
 H.sm.right<-(2/3)*H.fome.right
 H.lg.right<-(1/3)*H.fome.right
