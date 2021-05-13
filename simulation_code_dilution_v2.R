@@ -1,5 +1,7 @@
 sim.function<-function(type=c("primary"),model=c("A"),timestep=0.001,iter=1000){
   
+  set.seed(30)
+  
   matrix.all<-list()
   
   lengthsim<<-(((1/timestep)*duration)+1)

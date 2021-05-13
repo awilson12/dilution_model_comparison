@@ -2,6 +2,8 @@ sim.function2<-function(type=c("primary"),model=c("A"),timestep=0.001,iter=1000)
   
   matrix.all<-list()
   
+  set.seed(30)
+  
   lengthsim<<-(((1/timestep)*duration)+1)
   
   source('defining_parameters_v2.R')

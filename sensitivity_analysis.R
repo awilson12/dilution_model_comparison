@@ -6,6 +6,7 @@ require(ggpubr)
 
 iter<-5000
 timestep<-0.001
+set.seed(30)
 
 
 
@@ -19,22 +20,22 @@ timestep<-0.001
 
 source('main_code_v2.R')
 
-windows()
-ggplot(frame.ratio)+geom_point(aes(x=(smallfomite.conc*SA.smallfomite/200)*100,y=mucousmax),size=3,alpha=0.1)+
-  scale_y_continuous(name="Dose",trans="log10")+
-  scale_x_continuous(name="% Viral Particles on Small Fomite")+
+#windows()
+#ggplot(frame.ratio)+geom_point(aes(x=(smallfomite.conc*SA.smallfomite/200)*100,y=mucousmax),size=3,alpha=0.1)+
+#  scale_y_continuous(name="Dose",trans="log10")+
+#  scale_x_continuous(name="% Viral Particles on Small Fomite")+
   #geom_vline(xintercept=SA.smallfomite*100,size=2,linetype="dashed",color="black",alpha=0.5)+
   #geom_vline(xintercept=0.5*100,size=2,linetype="dashed",color="#00CCCC",alpha=0.5)+
-  geom_point(aes(x=SA.smallfomite/20100*100,y=mean(frame.all2$dose[frame.all2$model=="Model A"]),fill="Model A"),shape=22,size=8,alpha=0.3)+
-  geom_point(aes(x=SA.smallfomite/20100*100,y=mean(frame.all2$dose[frame.all2$model=="Model B"]),fill="Model B"),shape=23,size=8,alpha=0.3)+
-  geom_point(aes(x=0.5*100,y=mean(frame.all2$dose[frame.all2$model=="Model C"]),fill="Model C"),shape=22,size=8,alpha=0.3)+
-  #geom_text(x=13,y=-1.32,label="Model B",size=6)+
-  #geom_text(x=13,y=-1.57,label="Model A",size=6)+
-  #geom_text(x=63,y=0.08,label="Model C",size=6)+
-  scale_shape_manual(labels=c("Model A","Model B","Model C"),values=c(22,23,22),name="")+
-  scale_fill_manual(labels=c("Model A","Model B","Model C"),values=c("#3333FF","#FFFF00","#00CCCC"),name="")+
-  theme_pubr()+
-  theme(axis.title = element_text(size=18),axis.text=element_text(size=18),legend.position = "none")
+#  geom_point(aes(x=SA.smallfomite/20100*100,y=mean(frame.all2$dose[frame.all2$model=="Model A"]),fill="Model A"),shape=22,size=8,alpha=0.3)+
+#  geom_point(aes(x=SA.smallfomite/20100*100,y=mean(frame.all2$dose[frame.all2$model=="Model B"]),fill="Model B"),shape=23,size=8,alpha=0.3)+
+#  geom_point(aes(x=0.5*100,y=mean(frame.all2$dose[frame.all2$model=="Model C"]),fill="Model C"),shape=22,size=8,alpha=0.3)+
+  #geom_text(x=13,y=-1.32,label="SA Model B",size=6)+
+  #geom_text(x=13,y=-1.57,label="SA Model A",size=6)+
+  #geom_text(x=63,y=0.08,label="SA Model C",size=6)+
+#  scale_shape_manual(labels=c("SA Model A","SA Model B","SA Model C"),values=c(22,23,22),name="")+
+#  scale_fill_manual(labels=c("SA Model A","SA Model B","SA Model C"),values=c("#3333FF","#FFFF00","#00CCCC"),name="")+
+#  theme_pubr()+
+#  theme(axis.title = element_text(size=18),axis.text=element_text(size=18),legend.position = "none")
 
 windows()
 ggplot(frame.ratio)+geom_point(aes(x=(smallfomite.conc),y=mucousmax),size=3,alpha=0.1)+
@@ -196,11 +197,18 @@ ggplot(data=frame.model.sensitivity[frame.model.sensitivity$state=="mucous membr
   theme_pubr()+
   theme(axis.text=element_text(size=16),axis.title=element_text(size=16),legend.text=element_text(size=16),title=element_text(size=18))
 
+#change labels for clarity
+finaldoseall$model[finaldoseall$model=="A"]<-"SA Model A"
+finaldoseall$model[finaldoseall$model=="B"]<-"SA Model B"
+finaldoseall$model[finaldoseall$model=="C"]<-"SA Model C"
+finaldoseall$model[finaldoseall$model=="D"]<-"SA Model D"
+
+
 windows()
 ggplot(data=finaldoseall)+geom_violin(aes(x=model,y=dose,fill=model),draw_quantiles = c(0.25,0.5,0.75),alpha=0.2)+
   scale_fill_manual(name="",values=c("#3333FF","#FF3311","#00CCCC","black"))+
   scale_y_continuous(name="Dose (# viral particles)",trans="log10")+
-  scale_x_discrete(name="Model")+
+  scale_x_discrete(name="")+
   theme_pubr()+
   theme(axis.text=element_text(size=16),axis.title=element_text(size=16),title=element_text(size=18),legend.position = "none")
 
@@ -319,10 +327,14 @@ windows()
 #  theme(axis.text=element_text(size=16),axis.title=element_text(size=16),legend.text=element_text(size=16),title=element_text(size=18))+
 #  ggtitle("A")
 
+finaldoseall2$model[finaldoseall2$model=="E"]<-"SA Model E"
+finaldoseall2$model[finaldoseall2$model=="F"]<-"SA Model F"
+
+
 A<-ggplot(data=finaldoseall2)+geom_violin(aes(x=model,y=dose,fill=model),draw_quantiles = c(0.25,0.5,0.75),alpha=0.2)+
   #scale_fill_manual(name="",values=c("#3333FF","#FF3311","#00CCCC","black"))+
   scale_y_continuous(name="Dose (# viral particles)",trans="log10")+
-  scale_x_discrete(name="Model")+
+  scale_x_discrete(name="")+
   theme_pubr()+
   theme(axis.text=element_text(size=16),axis.title=element_text(size=16),title=element_text(size=18),legend.position = "none")
 
