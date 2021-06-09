@@ -198,10 +198,10 @@ ggplot(data=frame.model.sensitivity[frame.model.sensitivity$state=="mucous membr
   theme(axis.text=element_text(size=16),axis.title=element_text(size=16),legend.text=element_text(size=16),title=element_text(size=18))
 
 #change labels for clarity
-finaldoseall$model[finaldoseall$model=="A"]<-"SA Model A"
-finaldoseall$model[finaldoseall$model=="B"]<-"SA Model B"
-finaldoseall$model[finaldoseall$model=="C"]<-"SA Model C"
-finaldoseall$model[finaldoseall$model=="D"]<-"SA Model D"
+finaldoseall$model[finaldoseall$model=="A"]<-"Model C1"
+finaldoseall$model[finaldoseall$model=="B"]<-"Model C2"
+finaldoseall$model[finaldoseall$model=="C"]<-"Model C3"
+finaldoseall$model[finaldoseall$model=="D"]<-"Model C4"
 
 
 windows()
@@ -210,6 +210,7 @@ ggplot(data=finaldoseall)+geom_violin(aes(x=model,y=dose,fill=model),draw_quanti
   scale_y_continuous(name="Dose (# viral particles)",trans="log10")+
   scale_x_discrete(name="")+
   theme_pubr()+
+  ggtitle("A")+
   theme(axis.text=element_text(size=16),axis.title=element_text(size=16),title=element_text(size=18),legend.position = "none")
 
 
@@ -327,8 +328,8 @@ windows()
 #  theme(axis.text=element_text(size=16),axis.title=element_text(size=16),legend.text=element_text(size=16),title=element_text(size=18))+
 #  ggtitle("A")
 
-finaldoseall2$model[finaldoseall2$model=="E"]<-"SA Model E"
-finaldoseall2$model[finaldoseall2$model=="F"]<-"SA Model F"
+finaldoseall2$model[finaldoseall2$model=="E"]<-"Model C5"
+finaldoseall2$model[finaldoseall2$model=="F"]<-"Model C6"
 
 
 A<-ggplot(data=finaldoseall2)+geom_violin(aes(x=model,y=dose,fill=model),draw_quantiles = c(0.25,0.5,0.75),alpha=0.2)+
@@ -336,7 +337,11 @@ A<-ggplot(data=finaldoseall2)+geom_violin(aes(x=model,y=dose,fill=model),draw_qu
   scale_y_continuous(name="Dose (# viral particles)",trans="log10")+
   scale_x_discrete(name="")+
   theme_pubr()+
+  ggtitle("B")+
   theme(axis.text=element_text(size=16),axis.title=element_text(size=16),title=element_text(size=18),legend.position = "none")
+
+frame.model.sensitivity2$model[frame.model.sensitivity2$model=="E"]<-"Model C5"
+frame.model.sensitivity2$model[frame.model.sensitivity2$model=="F"]<-"Model C6"
 
 B<-ggplot(data=frame.model.sensitivity2[frame.model.sensitivity2$state=="hand 1" | frame.model.sensitivity2$state=="hand 2",])+
   geom_line(aes(x=time*timestep,y=means,color=state,group=state),size=1,alpha=0.5)+
@@ -347,9 +352,11 @@ B<-ggplot(data=frame.model.sensitivity2[frame.model.sensitivity2$state=="hand 1"
   scale_fill_discrete(name="")+
   facet_wrap(~model)+
   theme_pubr()+
-  theme(axis.text=element_text(size=16),axis.title=element_text(size=16),legend.text=element_text(size=16),title=element_text(size=18))+
-  ggtitle("B")
+  theme(axis.text=element_text(size=16),axis.title=element_text(size=16),legend.text=element_text(size=16),title=element_text(size=18),
+        strip.text=element_text(size=16))+
+  ggtitle("C")
 
+windows()
 ggarrange(A,B)
 
 #frame.model.sensitivity<-subset(frame.model.sensitivity,select=c(-X))
