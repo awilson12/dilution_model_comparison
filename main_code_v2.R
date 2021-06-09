@@ -4,6 +4,7 @@ require(ggpubr)
 
 iter<-5000
 timestep<-0.001
+set.seed(30)
 
 source('simulation_code_dilution_v3.R')
 
