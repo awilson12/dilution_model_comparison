@@ -304,8 +304,12 @@ my_comparisons<-list(c("Model A","Model B"),
                   c("Model B","Model C"),
                   c("Model A","Model C"))
 
+frame.all3<-data.frame(model=c("Model A","Model B","Model C"),
+                       meandose=c(mean(doseA),mean(doseB),mean(doseC)))
+
 windows()
 ggplot(frame.all2)+geom_violin(aes(x=model,y=dose,fill=model),draw_quantiles=c(0.25,0.5,0.75),alpha=0.2)+
+  geom_point(data=frame.all3,aes(x=model,y=meandose,fill=model),size=3)+
   scale_y_continuous(trans="log10",name="Dose")+
   scale_x_discrete(name="")+
   scale_fill_manual(name="",values=c("#3333FF","#FF3311","#00CCCC"))+
