@@ -203,10 +203,17 @@ finaldoseall$model[finaldoseall$model=="B"]<-"Model C2"
 finaldoseall$model[finaldoseall$model=="C"]<-"Model C3"
 finaldoseall$model[finaldoseall$model=="D"]<-"Model C4"
 
+finaldoseall.meandose<-data.frame(model=c("Model C1","Model C2","Model C3","Model C4"),
+                                  meandose=c(mean(finaldoseall$dose[finaldoseall$model=="Model C1"]),
+                                             mean(finaldoseall$dose[finaldoseall$model=="Model C2"]),
+                                             mean(finaldoseall$dose[finaldoseall$model=="Model C3"]),
+                                             mean(finaldoseall$dose[finaldoseall$model=="Model C4"])))
+
 
 windows()
 ggplot(data=finaldoseall)+geom_violin(aes(x=model,y=dose,fill=model),draw_quantiles = c(0.25,0.5,0.75),alpha=0.2)+
   scale_fill_manual(name="",values=c("#3333FF","#FF3311","#00CCCC","black"))+
+  geom_point(data=finaldoseall.meandose,aes(x=model,y=meandose),size=2)+
   scale_y_continuous(name="Dose (# viral particles)",trans="log10")+
   scale_x_discrete(name="")+
   theme_pubr()+
@@ -331,9 +338,14 @@ windows()
 finaldoseall2$model[finaldoseall2$model=="E"]<-"Model C5"
 finaldoseall2$model[finaldoseall2$model=="F"]<-"Model C6"
 
+finaldoseall2.meandose<-data.frame(model=c("Model C5", "Model C6"),
+                                   meandose=c(mean(finaldoseall2$dose[finaldoseall2$model=="Model C5"]),
+                                              mean(finaldoseall2$dose[finaldoseall2$model=="Model C6"])))
+
 
 A<-ggplot(data=finaldoseall2)+geom_violin(aes(x=model,y=dose,fill=model),draw_quantiles = c(0.25,0.5,0.75),alpha=0.2)+
   #scale_fill_manual(name="",values=c("#3333FF","#FF3311","#00CCCC","black"))+
+  geom_point(data=finaldoseall2.meandose,aes(x=model,y=meandose),size=2)+
   scale_y_continuous(name="Dose (# viral particles)",trans="log10")+
   scale_x_discrete(name="")+
   theme_pubr()+
