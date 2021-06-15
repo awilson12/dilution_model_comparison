@@ -13,7 +13,7 @@ H.face<-rtrunc(iter,"norm",mean=14,sd=5.4,a=0,b=30)/60 #per hr so convert to per
 
 #Parameters for Model A only-------------------------------------------------------
 A.hand<-runif(iter,445,535) #cm^2
-S.H<-runif(iter,0.008,0.24)
+S.H<-runif(iter,0.008,0.25)
 S.Face<-runif(iter,0.008,0.012)
 
 H.fome<-rlnorm(iter,meanlog=log(4.1),sdlog=log(1.6))
