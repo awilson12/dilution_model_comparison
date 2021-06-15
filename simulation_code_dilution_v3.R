@@ -140,10 +140,10 @@ sim.function2<-function(type=c("primary"),model=c("A"),timestep=0.001,iter=1000)
     }else if (model=="B"){
       
       #fingertip
-      matrix.save.temp[2,]<-matrix.save[2,]/(A.fingertip[l]*2)
+      matrix.save.temp[3,]<-matrix.save[3,]/(A.fingertip[l]*2)
       
       #nonfingertip
-      matrix.save.temp[3,]<-matrix.save[3,]/(A.nonfingertip[l]*2)
+      matrix.save.temp[2,]<-matrix.save[2,]/(A.nonfingertip[l]*2)
       
       #fomites
       matrix.save.temp[1,]<-matrix.save[1,]/total.fomeSA
