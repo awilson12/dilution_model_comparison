@@ -86,8 +86,8 @@ for (i in 1:lengthsim){
   for(j in 1:iter){
     temp<-matrix.list[[j]]
     mucous[j]<-matrix.list[[j]][5,i]
-    fingertip[j]<-matrix.list[[j]][2,i]
-    nonfingertip[j]<-matrix.list[[j]][3,i]
+    fingertip[j]<-matrix.list[[j]][3,i]
+    nonfingertip[j]<-matrix.list[[j]][2,i]
     fomites[j]<-matrix.list[[j]][1,i]
     
     if(i==lengthsim){
