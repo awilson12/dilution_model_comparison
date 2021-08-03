@@ -60,6 +60,22 @@ sim.function<-function(type=c("primary"),model=c("A"),timestep=0.001,iter=1000){
         
         Ptemp<-PB
         
+      }else if (model=="C"){
+        matrix.dim<-5
+        
+        #initialize matrix
+        matrix.save<-matrix(nrow=matrix.dim,ncol=lengthsim)
+        rownames(matrix.save)<-c("small fomite","large fomite",
+                                 "hands","loss of viability",
+                                 "mucous membrane")
+        matrix.save[1,1]<-small.fome.virus
+        matrix.save[2,1]<-large.fome.virus
+        matrix.save[3:5,1]<-0
+        
+        source('defining_probabilities_modelC.R')
+        
+        Ptemp<-PC
+        
       }else{
         matrix.dim<-6
         
@@ -74,10 +90,9 @@ sim.function<-function(type=c("primary"),model=c("A"),timestep=0.001,iter=1000){
         matrix.save[2,1]<-large.fome.virus
         matrix.save[3:6,1]<-0
         
-        source('defining_probabilities_modelC.R')
+        source('defining_probabilities_modelD.R')
         
-        Ptemp<-PC
-        
+        Ptemp<-PD
       }
     }else{
       #sensitivity analysis models (A through F)
@@ -97,7 +112,7 @@ sim.function<-function(type=c("primary"),model=c("A"),timestep=0.001,iter=1000){
       
       source('defining_probabilities_modelC.R')
       
-      Ptemp<-PC
+      Ptemp<-PD
      
     }
     
@@ -114,12 +129,14 @@ sim.function<-function(type=c("primary"),model=c("A"),timestep=0.001,iter=1000){
           
           Ptemp<-Ptemp%*%PB
           
+        }else if (model=="D"){
+          Ptemp<-Ptemp%*%PD
         }else{
           Ptemp<-Ptemp%*%PC
         }
         
       }else{
-        Ptemp<-Ptemp%*%PC
+        Ptemp<-Ptemp%*%PD
       }
       
       matrix.save[,i]<-matrix.save[,1]%*%Ptemp
@@ -137,7 +154,7 @@ sim.function<-function(type=c("primary"),model=c("A"),timestep=0.001,iter=1000){
       
       #hands
       matrix.save.temp[1,]<-matrix.save[1,]/total.fomeSA
-        
+      
     }else if (model=="B"){
       
       #fingertip
@@ -148,9 +165,9 @@ sim.function<-function(type=c("primary"),model=c("A"),timestep=0.001,iter=1000){
       
       #fomites
       matrix.save.temp[1,]<-matrix.save[1,]/total.fomeSA
-  
       
-    }else if (model=="C"){
+      
+    }else if (model=="D"){
       
       #fingertip/
       matrix.save.temp[4,]<-matrix.save[4,]/(A.fingertip[l]*2)
@@ -164,7 +181,14 @@ sim.function<-function(type=c("primary"),model=c("A"),timestep=0.001,iter=1000){
       #large fomite
       matrix.save.temp[2,]<-matrix.save[2,]/SA.largefomite
       
+    }else{
+      matrix.save.temp[3,]<-matrix.save[3,]/(A.hand[l]*2)
+      
+      matrix.save.temp[1,]<-matrix.save[1,]/SA.smallfomite
+      
+      matrix.save.temp[2,]<-matrix.save[2,]/SA.largefomite
     }
+    
     
     matrix.all[[l]]<-matrix.save.temp
     

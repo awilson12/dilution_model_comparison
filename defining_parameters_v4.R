@@ -1,7 +1,7 @@
 #Parameters relevant to all models----------------------------------------
 
-TE.HF<-runif(iter,0.01,0.406)
-TE.FH<-runif(iter,0.01,0.406)
+TE.HF<-rtriangle(iter,a=0.01,b=0.406,c=0.208)
+TE.FH<-rtriangle(iter,a=0.01,b=0.406,c=0.208)
 TE.HM<-rtrunc(iter,"norm",mean=0.3390,sd=0.1318,a=0,b=1)
 
 k.fome<-runif(iter,0.10,0.12)/60 #hr-1 so convert to min
@@ -18,7 +18,8 @@ S.Face<-runif(iter,0.008,0.012)
 
 H.fome<-rlnorm(iter,meanlog=log(4.1),sdlog=log(1.6))
 
-
+H.sm.fome<-(2/3)*H.fome
+H.lg.fome<-(1/3)*H.fome
 #Parameters for Model A & B----------------------------------------------
 
 total.fomeSA<-20100 #cm^2

@@ -44,12 +44,12 @@ sim.function3<-function(type=c("primary"),model=c("A"),timestep=0.001,iter=1000,
       
       source('defining_probabilities_modelC_sensitivityR.R')
       
-      Ptemp<-PC
+      Ptemp<-PD
     
     
     for (i in 2:(((1/timestep)*duration)+1)){
 
-        Ptemp<-Ptemp%*%PC
+        Ptemp<-Ptemp%*%PD
       
       matrix.save[,i]<-matrix.save[,1]%*%Ptemp
       

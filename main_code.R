@@ -1,6 +1,7 @@
 require(truncdist)
 require(ggplot2)
 require(ggpubr)
+require(triangle)
 
 #clear environment
 rm(list = ls())
@@ -125,10 +126,91 @@ time<-rep(0:(lengthsim-1),4)
 frame.model.B<-data.frame(means=means,sd=sd,state=state,time=time,
                           model="Model B")
 
-
 #----------------MODEL C---------------------------------------
 
 sim.function(type="primary",model="C",timestep=timestep,iter=iter)
+
+mucous<-rep(NA,iter)
+mucous.mean<-rep(NA,lengthsim)
+mucous.sd<-rep(NA,lengthsim)
+
+hands<-rep(NA,iter)
+hands.mean<-rep(NA,lengthsim)
+hands.sd<-rep(NA,lengthsim)
+
+smallfomite<-rep(NA,iter)
+smallfomite.mean<-rep(NA,lengthsim)
+smallfomite.sd<-rep(NA,lengthsim)
+
+largefomite<-rep(NA,iter)
+largefomite.mean<-rep(NA,lengthsim)
+largefomite.sd<-rep(NA,lengthsim)
+
+doseC<-rep(NA,iter)
+
+
+for (i in 1:lengthsim){
+  
+  for(j in 1:iter){
+    temp<-matrix.list[[j]]
+    mucous[j]<-matrix.list[[j]][5,i]
+    hands[j]<-matrix.list[[j]][3,i]
+    smallfomite[j]<-matrix.list[[j]][1,i]
+    largefomite<-matrix.list[[j]][2,i]
+    
+    if(i==lengthsim){
+      doseC[j]<-mucous[j]
+    }
+  }
+  
+  
+  mucous.mean[i]<-mean(mucous)
+  
+  mucous.sd[i]<-sd(mucous)
+  
+  hands.mean[i]<-mean(hands)
+  hands.sd[i]<-sd(hands)
+  
+  smallfomite.mean[i]<-mean(smallfomite)
+  smallfomite.sd[i]<-sd(smallfomite)
+  
+  largefomite.mean[i]<-mean(largefomite)
+  largefomite.sd[i]<-sd(largefomite)
+  
+}
+
+largefomite.conc<-rep(NA,iter)
+smallfomite.conc<-rep(NA,iter)
+mucous.max<-rep(NA,iter)
+
+for(j in 1:iter){
+  mucous.max[j]<-max(matrix.list[[j]][6,])
+  smallfomite.conc[j]<-matrix.list[[j]][1,1]
+  largefomite.conc[j]<-matrix.list[[j]][2,1]
+}
+
+
+means<-c(mucous.mean,hands.mean,
+         smallfomite.mean,largefomite.mean)
+sd<-c(mucous.sd,fingertip.sd,nonfingertip.sd,
+      smallfomite.sd,largefomite.sd)
+state<-c(rep("mucous membranes",lengthsim),rep("hands",lengthsim),
+         rep("small fomite",lengthsim),rep("large fomite",lengthsim))
+time<-rep(0:(lengthsim-1),5)
+
+frame.model.C<-data.frame(means=means,sd=sd,state=state,time=time,
+                          model="Model C")
+
+frame.ratio<-data.frame(mucousmax=mucous.max,smallfomite.conc=smallfomite.conc,
+                        largefomite.conc=largefomite.conc)
+
+ggplot(frame.ratio)+geom_point(aes(x=smallfomite.conc/200,y=mucousmax))+
+  scale_y_continuous(trans="log10")
+
+
+#----------------MODEL D---------------------------------------
+
+sim.function(type="primary",model="D",timestep=timestep,iter=iter)
 
 
 mucous<-rep(NA,iter)
@@ -208,8 +290,8 @@ state<-c(rep("mucous membranes",lengthsim),rep("fingertip hand area",lengthsim),
          rep("large fomite",lengthsim))
 time<-rep(0:(lengthsim-1),5)
 
-frame.model.C<-data.frame(means=means,sd=sd,state=state,time=time,
-                          model="Model C")
+frame.model.D<-data.frame(means=means,sd=sd,state=state,time=time,
+                          model="Model D")
 
 frame.ratio<-data.frame(mucousmax=mucous.max,smallfomite.conc=smallfomite.conc,
                         largefomite.conc=largefomite.conc)
@@ -218,7 +300,7 @@ ggplot(frame.ratio)+geom_point(aes(x=smallfomite.conc/200,y=mucousmax))+
   scale_y_continuous(trans="log10")
 
 #-------------------------frame all---------------------------------------------------------------
-frame.all<-rbind(frame.model.A,frame.model.B,frame.model.C)
+frame.all<-rbind(frame.model.A,frame.model.B,frame.model.C,frame.model.D)
 
 #windows()
 #ggplot(frame.all)+geom_line(aes(x=time,y=means,group=state,color=state))+
