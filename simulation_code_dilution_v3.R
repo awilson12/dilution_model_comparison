@@ -110,7 +110,7 @@ sim.function2<-function(type=c("primary"),model=c("A"),timestep=0.001,iter=1000)
                                "non-fingertip","fingertip",
                                "loss of viability", "mucous membranes")
       
-      source('defining_probabilities_modelC.R')
+      source('defining_probabilities_modelD.R')
       
       Ptemp<-PD
      
