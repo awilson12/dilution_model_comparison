@@ -365,8 +365,8 @@ C<-ggplot(frame.all[frame.all$state=="small env surf"|frame.all$state=="large en
   #geom_ribbon(aes(x=time*timestep,ymin=means-sd,ymax=means+sd,group=interaction(model,state),fill=state),alpha=0.3)+
   scale_y_continuous(trans="log10",name=expression("# Viral Particles/cm"^2))+
   scale_x_continuous(name="Time (min)")+
-  scale_fill_manual(name="",values=c("#3333FF","#FF3311","#00CCCC","grey"))+
-  scale_color_manual(name="",values=c("#3333FF","#FF3311","#00CCCC","grey"))+
+  scale_fill_manual(name="",values=c("#3333FF","#FF3311","#00CCCC"))+
+  scale_color_manual(name="",values=c("#3333FF","#FF3311","#00CCCC"))+
   theme_pubr()+
   theme(axis.text=element_text(size=16),axis.title=element_text(size=16),legend.text=element_text(size=16),strip.text=element_text(size=16))
 
