@@ -35,11 +35,11 @@ P.2.total<-c(P.2[1],P.2.2,P.2[2:4])
 
 lambdas.3<-c(lambda.3.1.C[l],lambda.3.2.C[l],lambda.3.4.C[l],lambda.3.5.C[l])
 
-lambda.3.T<-sum(lambdas.2)
+lambda.3.T<-sum(lambdas.3)
 
-P.3.3<-exp(-lambda.2.T)
+P.3.3<-exp(-lambda.3.T)
 
-P.3<-(1-P.2.2)*(lambdas.2/lambda.2.T)
+P.3<-(1-P.3.3)*(lambdas.3/lambda.3.T)
 
 P.3.total<-c(P.3[1:2],P.3.3,P.3[3:4])
 
