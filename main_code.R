@@ -192,11 +192,11 @@ for(j in 1:iter){
 
 means<-c(mucous.mean,hands.mean,
          smallfomite.mean,largefomite.mean)
-sd<-c(mucous.sd,fingertip.sd,nonfingertip.sd,
+sd<-c(mucous.sd,hands.sd,
       smallfomite.sd,largefomite.sd)
 state<-c(rep("mucous membranes",lengthsim),rep("hands",lengthsim),
          rep("small fomite",lengthsim),rep("large fomite",lengthsim))
-time<-rep(0:(lengthsim-1),5)
+time<-rep(0:(lengthsim-1),4)
 
 frame.model.C<-data.frame(means=means,sd=sd,state=state,time=time,
                           model="Model C")
@@ -206,6 +206,7 @@ frame.ratio<-data.frame(mucousmax=mucous.max,smallfomite.conc=smallfomite.conc,
 
 ggplot(frame.ratio)+geom_point(aes(x=smallfomite.conc/200,y=mucousmax))+
   scale_y_continuous(trans="log10")
+
 
 
 #----------------MODEL D---------------------------------------
@@ -233,7 +234,7 @@ largefomite<-rep(NA,iter)
 largefomite.mean<-rep(NA,lengthsim)
 largefomite.sd<-rep(NA,lengthsim)
 
-doseC<-rep(NA,iter)
+doseD<-rep(NA,iter)
 
 
 for (i in 1:lengthsim){
@@ -247,7 +248,7 @@ for (i in 1:lengthsim){
     largefomite<-matrix.list[[j]][2,i]
     
     if(i==lengthsim){
-      doseC[j]<-mucous[j]
+      doseD[j]<-mucous[j]
     }
   }
   
@@ -320,8 +321,8 @@ A<-ggplot(frame.all[frame.all$state=="mucous membranes",])+geom_line(aes(x=time*
   geom_ribbon(aes(x=time*timestep,ymin=means-sd*1.96/sqrt(1000),ymax=means+sd*1.96/sqrt(1000),group=model,fill=model),alpha=0.3)+
   scale_y_continuous(trans="log10",name="Dose (# Viral Particles)")+
   scale_x_continuous(name="Time (min)")+
-  scale_fill_manual(name="",values=c("#3333FF","#FF3311","#00CCCC"))+
-  scale_color_manual(name="",values=c("#3333FF","#FF3311","#00CCCC"))+
+  scale_fill_manual(name="",values=c("#3333FF","#FF3311","#00CCCC","grey"))+
+  scale_color_manual(name="",values=c("#3333FF","#FF3311","#00CCCC","grey"))+
   theme_pubr()+
   theme(axis.text=element_text(size=16),axis.title=element_text(size=16),legend.text=element_text(size=16),strip.text=element_text(size=16))
 
@@ -364,8 +365,8 @@ C<-ggplot(frame.all[frame.all$state=="small env surf"|frame.all$state=="large en
   #geom_ribbon(aes(x=time*timestep,ymin=means-sd,ymax=means+sd,group=interaction(model,state),fill=state),alpha=0.3)+
   scale_y_continuous(trans="log10",name=expression("# Viral Particles/cm"^2))+
   scale_x_continuous(name="Time (min)")+
-  scale_fill_manual(name="",values=c("#3333FF","#FF3311","#00CCCC"))+
-  scale_color_manual(name="",values=c("#3333FF","#FF3311","#00CCCC"))+
+  scale_fill_manual(name="",values=c("#3333FF","#FF3311","#00CCCC","grey"))+
+  scale_color_manual(name="",values=c("#3333FF","#FF3311","#00CCCC","grey"))+
   theme_pubr()+
   theme(axis.text=element_text(size=16),axis.title=element_text(size=16),legend.text=element_text(size=16),strip.text=element_text(size=16))
 
@@ -379,8 +380,8 @@ write.csv(frame.all,filename)
 
 #Note to self to redo this so we have max doses for all iters (not mean of all iter)
 
-frame.all2<-data.frame(dose=c(doseA,doseB,doseC),
-                       model=c(rep("Model A",iter),rep("Model B",iter),rep("Model C",iter)))
+frame.all2<-data.frame(dose=c(doseA,doseB,doseC,doseD),
+                       model=c(rep("Model A",iter),rep("Model B",iter),rep("Model C",iter),rep("Model D",iter)))
 
 my_comparisons<-list(c("Model A","Model B"),
                   c("Model B","Model C"),
@@ -394,7 +395,7 @@ ggplot(frame.all2)+geom_violin(aes(x=model,y=dose,fill=model),draw_quantiles=c(0
   geom_point(data=frame.all3,aes(x=model,y=meandose,fill=model),size=3)+
   scale_y_continuous(trans="log10",name="Dose")+
   scale_x_discrete(name="")+
-  scale_fill_manual(name="",values=c("#3333FF","#FF3311","#00CCCC"))+
+  scale_fill_manual(name="",values=c("#3333FF","#FF3311","#00CCCC","grey"))+
   theme_pubr()+
   theme(axis.text=element_text(size=16),axis.title=element_text(size=16),legend.text = element_text(size=16),legend.position='none')
 

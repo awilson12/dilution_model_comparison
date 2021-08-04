@@ -186,11 +186,11 @@ for(j in 1:iter){
 
 means<-c(mucous.mean,hands.mean,
          smallfomite.mean,largefomite.mean)
-sd<-c(mucous.sd,fingertip.sd,nonfingertip.sd,
+sd<-c(mucous.sd,hands.sd,
       smallfomite.sd,largefomite.sd)
 state<-c(rep("mucous membranes",lengthsim),rep("hands",lengthsim),
          rep("small fomite",lengthsim),rep("large fomite",lengthsim))
-time<-rep(0:(lengthsim-1),5)
+time<-rep(0:(lengthsim-1),4)
 
 frame.model.C<-data.frame(means=means,sd=sd,state=state,time=time,
                           model="Model C")
@@ -227,7 +227,7 @@ largefomite<-rep(NA,iter)
 largefomite.mean<-rep(NA,lengthsim)
 largefomite.sd<-rep(NA,lengthsim)
 
-doseC<-rep(NA,iter)
+doseD<-rep(NA,iter)
 
 
 for (i in 1:lengthsim){
@@ -241,7 +241,7 @@ for (i in 1:lengthsim){
     largefomite<-matrix.list[[j]][2,i]
     
     if(i==lengthsim){
-      doseC[j]<-mucous[j]
+      doseD[j]<-mucous[j]
     }
   }
   
