@@ -184,7 +184,7 @@ smallfomite.conc<-rep(NA,iter)
 mucous.max<-rep(NA,iter)
 
 for(j in 1:iter){
-  mucous.max[j]<-max(matrix.list[[j]][6,])
+  mucous.max[j]<-max(matrix.list[[j]][5,])
   smallfomite.conc[j]<-matrix.list[[j]][1,1]
   largefomite.conc[j]<-matrix.list[[j]][2,1]
 }
@@ -334,9 +334,9 @@ B<-ggplot(frame.all[frame.all$state=="hands"|frame.all$state=="non-fingertip han
   #geom_ribbon(aes(x=time*timestep,ymin=means-sd,ymax=means+sd,group=interaction(model,state),fill=state),alpha=0.3)+
   scale_y_continuous(trans="log10",name=expression("# Viral Particles/cm"^2))+
   scale_x_continuous(name="Time (min)")+
-  scale_fill_manual(name="",values=c("#3333FF","#FF3311","#00CCCC"))+
-  scale_color_manual(name="",values=c("#3333FF","#FF3311","#00CCCC"))+
-  facet_wrap(~model)+
+  scale_fill_manual(name="",values=c("#3333FF","#FF3311","#00CCCC","grey"))+
+  scale_color_manual(name="",values=c("#3333FF","#FF3311","#00CCCC","grey"))+
+  facet_wrap(~model,nrow=1)+
   theme_pubr()+
   theme(axis.text=element_text(size=16),axis.title=element_text(size=16),legend.text=element_text(size=16),strip.text=element_text(size=16))
 
@@ -385,10 +385,13 @@ frame.all2<-data.frame(dose=c(doseA,doseB,doseC,doseD),
 
 my_comparisons<-list(c("Model A","Model B"),
                   c("Model B","Model C"),
-                  c("Model A","Model C"))
+                  c("Model A","Model C"),
+                  c("Model A","Model D"),
+                  c("Model B","Model D"),
+                  c("Model C"),"Model D")
 
-frame.all3<-data.frame(model=c("Model A","Model B","Model C"),
-                       meandose=c(mean(doseA),mean(doseB),mean(doseC)))
+frame.all3<-data.frame(model=c("Model A","Model B","Model C","Model D"),
+                       meandose=c(mean(doseA),mean(doseB),mean(doseC),mean(doseD)))
 
 windows()
 ggplot(frame.all2)+geom_violin(aes(x=model,y=dose,fill=model),draw_quantiles=c(0.25,0.5,0.75),alpha=0.2)+
@@ -411,3 +414,7 @@ signif(sd(frame.all2$dose[frame.all2$model=="Model B"]),2)
 signif(summary(frame.all2$dose[frame.all2$model=="Model C"]),2)
 signif(IQR((frame.all2$dose[frame.all2$model=="Model C"])),2)
 signif(sd(frame.all2$dose[frame.all2$model=="Model C"]),2)
+
+signif(summary(frame.all2$dose[frame.all2$model=="Model D"]),2)
+signif(IQR((frame.all2$dose[frame.all2$model=="Model D"])),2)
+signif(sd(frame.all2$dose[frame.all2$model=="Model D"]),2)
