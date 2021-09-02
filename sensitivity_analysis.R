@@ -38,20 +38,21 @@ source('main_code_v2.R')
 #  theme(axis.title = element_text(size=18),axis.text=element_text(size=18),legend.position = "none")
 
 windows()
-ggplot(frame.ratio)+geom_point(aes(x=(smallfomite.conc),y=mucousmax),size=3,alpha=0.1)+
-  scale_y_continuous(name="Dose",trans="log10")+
+ggplot(frame.ratio[frame.ratio$smallfomite.conc<1.5,])+geom_point(aes(x=(smallfomite.conc),y=mucousmax),size=3,alpha=0.1)+
+  scale_y_continuous(name="Dose (# of viral particles)",trans="log10")+
   scale_x_continuous(name=expression("Viral Particles/cm"^2))+
   #geom_vline(xintercept=SA.smallfomite*100,size=2,linetype="dashed",color="black",alpha=0.5)+
   #geom_vline(xintercept=0.5*100,size=2,linetype="dashed",color="#00CCCC",alpha=0.5)+
   geom_point(aes(x=200/20100,y=mean(frame.all2$dose[frame.all2$model=="Model A"]),fill="Model A"),shape=22,size=8,alpha=0.3)+
   geom_point(aes(x=200/20100,y=mean(frame.all2$dose[frame.all2$model=="Model B"]),fill="Model B"),shape=23,size=8,alpha=0.3)+
   geom_point(aes(x=1,y=mean(frame.all2$dose[frame.all2$model=="Model C"]),fill="Model C"),shape=22,size=8,alpha=0.3)+
+  geom_point(aes(x=1,y=mean(frame.all2$dose[frame.all2$model=="Model D"]),fill="Model D"),shape=23,size=8,alpha=0.3)+
   geom_vline(aes(xintercept=1),linetype="dashed")+
   geom_vline(aes(xintercept=200/20100),linetype="dashed")+
   geom_label(x=1,y=-2,label=expression("1 viral particle/cm"^"2"),size=5)+
   geom_label(x=0.1,y=-2,label=expression("0.01 viral particle/cm"^"2"),size=5)+
-  scale_shape_manual(labels=c("Model A","Model B","Model C"),values=c(22,23,22),name="")+
-  scale_fill_manual(labels=c("Model A","Model B","Model C"),values=c("#3333FF","#FFFF00","#00CCCC"),name="")+
+  scale_shape_manual(labels=c("Model A","Model B","Model C","Model D"),values=c(22,23,22,23),name="")+
+  scale_fill_manual(labels=c("Model A","Model B","Model C","Model D"),values=c("#3333FF","#FFFF00","#00CCCC","grey"),name="")+
   theme_pubr()+
   theme(axis.title = element_text(size=18),axis.text=element_text(size=18),legend.position = "none")
 
@@ -198,16 +199,16 @@ ggplot(data=frame.model.sensitivity[frame.model.sensitivity$state=="mucous membr
   theme(axis.text=element_text(size=16),axis.title=element_text(size=16),legend.text=element_text(size=16),title=element_text(size=18))
 
 #change labels for clarity
-finaldoseall$model[finaldoseall$model=="A"]<-"Model C1"
-finaldoseall$model[finaldoseall$model=="B"]<-"Model C2"
-finaldoseall$model[finaldoseall$model=="C"]<-"Model C3"
-finaldoseall$model[finaldoseall$model=="D"]<-"Model C4"
+finaldoseall$model[finaldoseall$model=="A"]<-"Model D1"
+finaldoseall$model[finaldoseall$model=="B"]<-"Model D2"
+finaldoseall$model[finaldoseall$model=="C"]<-"Model D3"
+finaldoseall$model[finaldoseall$model=="D"]<-"Model D4"
 
-finaldoseall.meandose<-data.frame(model=c("Model C1","Model C2","Model C3","Model C4"),
-                                  meandose=c(mean(finaldoseall$dose[finaldoseall$model=="Model C1"]),
-                                             mean(finaldoseall$dose[finaldoseall$model=="Model C2"]),
-                                             mean(finaldoseall$dose[finaldoseall$model=="Model C3"]),
-                                             mean(finaldoseall$dose[finaldoseall$model=="Model C4"])))
+finaldoseall.meandose<-data.frame(model=c("Model D1","Model D2","Model D3","Model D4"),
+                                  meandose=c(mean(finaldoseall$dose[finaldoseall$model=="Model D1"]),
+                                             mean(finaldoseall$dose[finaldoseall$model=="Model D2"]),
+                                             mean(finaldoseall$dose[finaldoseall$model=="Model D3"]),
+                                             mean(finaldoseall$dose[finaldoseall$model=="Model D4"])))
 
 
 windows()
@@ -335,12 +336,12 @@ windows()
 #  theme(axis.text=element_text(size=16),axis.title=element_text(size=16),legend.text=element_text(size=16),title=element_text(size=18))+
 #  ggtitle("A")
 
-finaldoseall2$model[finaldoseall2$model=="E"]<-"Model C5"
-finaldoseall2$model[finaldoseall2$model=="F"]<-"Model C6"
+finaldoseall2$model[finaldoseall2$model=="E"]<-"Model D5"
+finaldoseall2$model[finaldoseall2$model=="F"]<-"Model D6"
 
-finaldoseall2.meandose<-data.frame(model=c("Model C5", "Model C6"),
-                                   meandose=c(mean(finaldoseall2$dose[finaldoseall2$model=="Model C5"]),
-                                              mean(finaldoseall2$dose[finaldoseall2$model=="Model C6"])))
+finaldoseall2.meandose<-data.frame(model=c("Model D5", "Model D6"),
+                                   meandose=c(mean(finaldoseall2$dose[finaldoseall2$model=="Model D5"]),
+                                              mean(finaldoseall2$dose[finaldoseall2$model=="Model D6"])))
 
 
 A<-ggplot(data=finaldoseall2)+geom_violin(aes(x=model,y=dose,fill=model),draw_quantiles = c(0.25,0.5,0.75),alpha=0.2)+
