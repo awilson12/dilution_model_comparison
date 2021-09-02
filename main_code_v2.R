@@ -122,7 +122,7 @@ frame.model.B<-data.frame(means=means,sd=sd,state=state,time=time,
 
 #----------------MODEL C---------------------------------------
 
-sim.function(type="primary",model="C",timestep=timestep,iter=iter)
+sim.function2(type="primary",model="C",timestep=timestep,iter=iter)
 
 mucous<-rep(NA,iter)
 mucous.mean<-rep(NA,lengthsim)
@@ -173,15 +173,6 @@ for (i in 1:lengthsim){
   
 }
 
-largefomite.conc<-rep(NA,iter)
-smallfomite.conc<-rep(NA,iter)
-mucous.max<-rep(NA,iter)
-
-for(j in 1:iter){
-  mucous.max[j]<-max(matrix.list[[j]][6,])
-  smallfomite.conc[j]<-matrix.list[[j]][1,1]
-  largefomite.conc[j]<-matrix.list[[j]][2,1]
-}
 
 
 means<-c(mucous.mean,hands.mean,
@@ -195,16 +186,26 @@ time<-rep(0:(lengthsim-1),4)
 frame.model.C<-data.frame(means=means,sd=sd,state=state,time=time,
                           model="Model C")
 
-frame.ratio<-data.frame(mucousmax=mucous.max,smallfomite.conc=smallfomite.conc,
-                        largefomite.conc=largefomite.conc)
+#largefomite.conc<-rep(NA,iter)
+#smallfomite.conc<-rep(NA,iter)
+#mucous.max<-rep(NA,iter)
 
-ggplot(frame.ratio)+geom_point(aes(x=smallfomite.conc/200,y=mucousmax))+
-  scale_y_continuous(trans="log10")
+#for(j in 1:iter){
+#  mucous.max[j]<-max(matrix.list[[j]][5,])
+#  smallfomite.conc[j]<-matrix.list[[j]][1,1]
+#  largefomite.conc[j]<-matrix.list[[j]][2,1]
+#}
+
+#frame.ratio<-data.frame(mucousmax=mucous.max,smallfomite.conc=smallfomite.conc,
+#                        largefomite.conc=largefomite.conc)
+
+#ggplot(frame.ratio)+geom_point(aes(x=smallfomite.conc/200,y=mucousmax))+
+#  scale_y_continuous(trans="log10")
 
 
 #----------------MODEL D---------------------------------------
 
-sim.function(type="primary",model="D",timestep=timestep,iter=iter)
+sim.function2(type="sensitivity",model="D",timestep=timestep,iter=iter)
 
 
 mucous<-rep(NA,iter)
