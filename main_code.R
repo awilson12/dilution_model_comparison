@@ -359,7 +359,7 @@ frame.all$state[frame.all$state=="large fomite"]<-"large env surf"
 
 frame.all$state[frame.all$state=="fomites"]<-"combined env surf"
 
-C<-ggplot(frame.all[frame.all$state=="small env surf"|frame.all$state=="large env surf" | frame.all$state=="combined env surf" & frame.all$model!="Model A",])+
+C<-ggplot(frame.all[frame.all$state=="small env surf"|frame.all$state=="large env surf" | frame.all$state=="combined env surf",])+
   geom_line(aes(x=time*timestep,y=means,group=interaction(model,state),color=state))+
   geom_ribbon(aes(x=time*timestep,ymin=means-sd*1.96/sqrt(1000),ymax=means+sd*1.96/sqrt(1000),group=interaction(model,state),fill=state),alpha=0.3)+
   #geom_ribbon(aes(x=time*timestep,ymin=means-sd,ymax=means+sd,group=interaction(model,state),fill=state),alpha=0.3)+
@@ -368,17 +368,16 @@ C<-ggplot(frame.all[frame.all$state=="small env surf"|frame.all$state=="large en
   scale_fill_manual(name="",values=c("#3333FF","#FF3311","#00CCCC"))+
   scale_color_manual(name="",values=c("#3333FF","#FF3311","#00CCCC"))+
   theme_pubr()+
+  facet_wrap(~model)+
   theme(axis.text=element_text(size=16),axis.title=element_text(size=16),legend.text=element_text(size=16),strip.text=element_text(size=16))
 
 windows()
-A
+C
 
 
 st=format(Sys.time(), "%Y-%m-%d")
 filename<-paste("frameall_",st, ".csv", sep = "")
 write.csv(frame.all,filename)
-
-#Note to self to redo this so we have max doses for all iters (not mean of all iter)
 
 frame.all2<-data.frame(dose=c(doseA,doseB,doseC,doseD),
                        model=c(rep("Model A",iter),rep("Model B",iter),rep("Model C",iter),rep("Model D",iter)))
@@ -396,7 +395,7 @@ frame.all3<-data.frame(model=c("Model A","Model B","Model C","Model D"),
 windows()
 ggplot(frame.all2)+geom_violin(aes(x=model,y=dose,fill=model),draw_quantiles=c(0.25,0.5,0.75),alpha=0.2)+
   geom_point(data=frame.all3,aes(x=model,y=meandose,fill=model),size=3)+
-  scale_y_continuous(trans="log10",name="Dose")+
+  scale_y_continuous(trans="log10",name="Dose (# of viral particles)")+
   scale_x_discrete(name="")+
   scale_fill_manual(name="",values=c("#3333FF","#FF3311","#00CCCC","grey"))+
   theme_pubr()+
