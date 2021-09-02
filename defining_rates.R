@@ -31,7 +31,7 @@ lambda.2.4.C<-k.fome*timestep
 lambda.3.1.C<-0.5*S.H*TE.HF*H.sm.fome*timestep
 lambda.3.2.C<-0.5*S.H*TE.HF*H.lg.fome*timestep
 lambda.3.4.C<-k.skin*timestep
-lambda.3.5.C<-0.5*S.F*TE.HM*H.face*timestep
+lambda.3.5.C<-0.5*S.Face*TE.HM*H.face*timestep
 
 #non-zero rates for model D
 
