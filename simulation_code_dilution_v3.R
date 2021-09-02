@@ -95,24 +95,43 @@ sim.function2<-function(type=c("primary"),model=c("A"),timestep=0.001,iter=1000)
         Ptemp<-PD
       }
     }else{
-      #sensitivity analysis models (A through F)
-      matrix.dim<-6
       
-      #initialize matrix
-      matrix.save<-matrix(nrow=matrix.dim,ncol=lengthsim)
+      if(model=="D"){
+        #sensitivity analysis models (A through F)
+        matrix.dim<-6
+        
+        #initialize matrix
+        matrix.save<-matrix(nrow=matrix.dim,ncol=lengthsim)
+        
+        #initial conditions
+        matrix.save[1,1]<-small.fome.virus[l]
+        matrix.save[2,1]<-large.fome.virus[l]
+        matrix.save[3:6,1]<-0
+        
+        rownames(matrix.save)<-c("small fomite","large fomite",
+                                 "non-fingertip","fingertip",
+                                 "loss of viability", "mucous membranes")
+        
+        source('defining_probabilities_modelD.R')
+        
+        Ptemp<-PD
+      }else{
+        matrix.dim<-5
+        
+        #initialize matrix
+        matrix.save<-matrix(nrow=matrix.dim,ncol=lengthsim)
+        rownames(matrix.save)<-c("small fomite","large fomite",
+                                 "hands","loss of viability",
+                                 "mucous membrane")
+        matrix.save[1,1]<-small.fome.virus[l]
+        matrix.save[2,1]<-large.fome.virus[l]
+        matrix.save[3:5,1]<-0
+        
+        source('defining_probabilities_modelC.R')
+        
+        Ptemp<-PC
+      }
       
-      #initial conditions
-      matrix.save[1,1]<-small.fome.virus[l]
-      matrix.save[2,1]<-large.fome.virus[l]
-      matrix.save[3:6,1]<-0
-      
-      rownames(matrix.save)<-c("small fomite","large fomite",
-                               "non-fingertip","fingertip",
-                               "loss of viability", "mucous membranes")
-      
-      source('defining_probabilities_modelD.R')
-      
-      Ptemp<-PD
      
     }
     

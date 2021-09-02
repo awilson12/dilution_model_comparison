@@ -192,7 +192,7 @@ sim.function<-function(type=c("primary"),model=c("A"),timestep=0.001,iter=1000){
     
     matrix.all[[l]]<-matrix.save.temp
     
-  } #end of iteraiton loop
+  } #end of iteration loop
   matrix.list<<-matrix.all
   
 } #end of function

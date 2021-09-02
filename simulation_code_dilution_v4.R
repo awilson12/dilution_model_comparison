@@ -42,7 +42,7 @@ sim.function3<-function(type=c("primary"),model=c("A"),timestep=0.001,iter=1000,
                                "hand 1","hand 2",
                                "loss of viability", "mucous membranes")
       
-      source('defining_probabilities_modelC_sensitivityR.R')
+      source('defining_probabilities_modelD.R')
       
       Ptemp<-PD
     
