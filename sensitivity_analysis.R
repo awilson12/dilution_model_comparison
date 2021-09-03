@@ -353,8 +353,8 @@ A<-ggplot(data=finaldoseall2)+geom_violin(aes(x=model,y=dose,fill=model),draw_qu
   ggtitle("B")+
   theme(axis.text=element_text(size=16),axis.title=element_text(size=16),title=element_text(size=18),legend.position = "none")
 
-frame.model.sensitivity2$model[frame.model.sensitivity2$model=="E"]<-"Model C5"
-frame.model.sensitivity2$model[frame.model.sensitivity2$model=="F"]<-"Model C6"
+frame.model.sensitivity2$model[frame.model.sensitivity2$model=="Model C5"]<-"Model D5"
+frame.model.sensitivity2$model[frame.model.sensitivity2$model=="Model C6"]<-"Model D6"
 
 B<-ggplot(data=frame.model.sensitivity2[frame.model.sensitivity2$state=="hand 1" | frame.model.sensitivity2$state=="hand 2",])+
   geom_line(aes(x=time*timestep,y=means,color=state,group=state),size=1,alpha=0.5)+
