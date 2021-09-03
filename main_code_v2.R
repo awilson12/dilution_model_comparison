@@ -10,7 +10,7 @@ source('simulation_code_dilution_v3.R')
 
 #----------------MODEL A--------------------------------------------
 
-sim.function2(type="primary",model="A",timestep=timestep,iter=iter)
+sim.function(type="primary",model="A",timestep=timestep,iter=iter)
 
 mucous<-rep(NA,iter)
 mucous.mean<-rep(NA,lengthsim)
@@ -61,7 +61,7 @@ frame.model.A<-data.frame(means=means,sd=sd,state=state,time=time,
 
 #--------------- MODEL B---------------------------------------------
 
-sim.function2(type="primary",model="B",timestep=timestep,iter=iter)
+sim.function(type="primary",model="B",timestep=timestep,iter=iter)
 
 mucous<-rep(NA,iter)
 mucous.mean<-rep(NA,lengthsim)
@@ -122,7 +122,7 @@ frame.model.B<-data.frame(means=means,sd=sd,state=state,time=time,
 
 #----------------MODEL C---------------------------------------
 
-sim.function2(type="primary",model="C",timestep=timestep,iter=iter)
+sim.function(type="primary",model="C",timestep=timestep,iter=iter)
 
 mucous<-rep(NA,iter)
 mucous.mean<-rep(NA,lengthsim)
